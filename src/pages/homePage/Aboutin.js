@@ -11,7 +11,7 @@ const Aboutin = () => {
         <div className='flex flex-col sm:flex-row justify-around items-center py-12'>
           <div className=' text-center'>
             <div className='text-2xl font-semibold text-white'>
-              the icon
+              Icon
             </div>
             <div className='text-4xl font-bold text-white'>
               title
