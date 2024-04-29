@@ -6,7 +6,7 @@ const Aboutin = () => {
       <div  >
         <div className='text-6xl text-center font-bold text-white py-6'>
 
-          ITS THE TITLE
+          SUJAL TITLE
         </div>
         <div className='flex flex-col sm:flex-row justify-around items-center py-12'>
           <div className=' text-center'>
