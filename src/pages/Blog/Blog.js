@@ -193,8 +193,9 @@ const Blog = () => {
           breakClassName="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-md"
           previousClassName={`relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-md mr-2 ${activePage === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-500 hover:text-white transition duration-300'}`}
           nextClassName={`relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-md ml-2 ${activePage === Math.ceil(bloggers.length / itemsPerPage) - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-500 hover:text-white hover:bg-[#3b82f6] transition duration-300'}`}
-          pageClassName="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+          pageClassName="relative inline-flex items-center  border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
           activeLinkClassName="bg-blue-500 text-white px-4 py-2 mx-1 rounded-md hover:bg-blue-600 transition duration-300"
+          pageLinkClassName='px-3 py-2'
           onPageChange={handlePageChange}
         />
       </div>
