@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faVenusMars,
@@ -7,31 +7,24 @@ import {
   faEnvelope,
   faLock,
   faEye,
+  faUserNinja,
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import ReactFlagsSelect from "react-flags-select";
-import Select from "react-select";
+// import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Toaster, toast } from "react-hot-toast";
 
 const Login = () => {
   const [action, setAction] = useState("Sign Up");
   const [showPassword, setShowPassword] = useState(false);
   const [selected, setSelected] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
+  // const { loading, dispatch } = useContext(AuthContext);
+  const [error, setError] = useState("");
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
-    console.log(`Option selected:`, selectedOption);
-  };
-
-  const options = [
-    { value: "Male", label: "Male" },
-    { value: "Female", label: "Female" },
-    { value: "Others", label: "Others" },
-  ];
+  const navigate = useNavigate();
 
   const styles = {
     container: {
@@ -130,6 +123,189 @@ const Login = () => {
     },
   };
 
+  const [credentials, setCredentials] = useState({
+    email: "ryano@gmail.com",
+    password: "Ryano@123",
+  });
+
+  const [credentialsRegister, setCredentialsRegister] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    password: "",
+    country: "",
+    gender: "",
+  });
+
+  const togglePasswordVisibility = (e) => {
+    e.preventDefault();
+    setShowPassword(!showPassword);
+  };
+
+  const selectCountry = (e) => {
+    setSelected(e);
+    setCredentialsRegister({ ...credentialsRegister, country: e });
+  };
+
+  // const handleChange = (selectedOption) => {
+  //   setSelectedOption(selectedOption);
+  //   setCredentialsRegister("gender", selectedOption.value);
+  //   console.log(`Option selected:`, selectedOption);
+  // };
+
+  const options = [
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" },
+  ];
+
+  console.log(credentialsRegister);
+
+  const handleClick = async () => {
+    // dispatch({ type: "LOGIN_START" });
+
+    try {
+      console.log(credentials);
+
+      const res = await axios.post(
+        "http://localhost:5079/api/auth/login",
+        credentials
+      );
+
+      // dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+      console.log(res);
+      navigate("/");
+    } catch (err) {
+      if (err.response && err.response.data) {
+        // dispatch({
+        //   type: "LOGIN_FAILURE",
+        //   payload:
+        //     err.response.data.message ||
+        //     "An error occurred. Please try again later.",
+        // });
+      } else {
+        // dispatch({
+        //   type: "LOGIN_FAILURE",
+        //   payload: "An error occurred. Please try again later.",
+        // });
+      }
+    }
+  };
+
+  const handleClickRegister = async () => {
+    // Perform full validation
+    
+    const { firstName, lastName, email, gender, username, password, country } =
+      credentialsRegister;
+
+    console.log(credentialsRegister);
+
+    //empty field
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !gender ||
+      !username ||
+      !password ||
+      !country
+    ) {
+      setError("Please fill in all fields.");
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    //proper email
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+      setError("Please enter a valid email address.");
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    //proper username
+    if (username.length < 5) {
+      setError("Username must be at least 5 characters long.");
+      toast.error("Username must be at least 5 characters long.");
+      return;
+    }
+
+    //proper password
+    if (!/\d/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      setError(
+        "Password must contain at least one number and one special character."
+      );
+      toast.error(
+        "Password must contain at least one number and one special character."
+      );
+      return;
+    }
+    if (password.length < 5) {
+      setError("Password must be at least 5 characters long.");
+      toast.error("Password must be at least 5 characters long.");
+      return;
+    }
+
+    try {
+      //registering
+      const res = await axios.post(
+        "http://localhost:5079/api/auth/register",
+        credentialsRegister
+      );
+      console.log(res);
+      // Clear any previous error message
+      setError("");
+
+      setCredentialsRegister({
+        firstName: "",
+        lastName: "",
+        email: "",
+        username: "",
+        password: "",
+        gender: "",
+        country: "",
+      });
+
+      toast.success("successfully register");
+      // Redirect to login page
+      navigate("/login");
+    } catch (err) {
+      console.error("Registration failed:", err);
+      toast.error("Registration failed!!");
+      // Display error message from server
+     
+    }
+  };
+
+  const setActionChange = () => {
+    if (action === "Login") {
+      handleClick();
+    } else {
+      setAction("Login");
+    }
+  };
+
+  const setActionRegisterChange = () => {
+    if (action === "Sign Up") {
+      handleClickRegister();
+    } else {
+      setAction("Sign Up");
+    }
+  };
+
+  console.log(credentialsRegister);
+
+  const handleChange = (e) => {
+    const { id, value } = e.target; // Destructure id and value from event target
+    setCredentialsRegister((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleGenderChange = (e) => {
+    setCredentialsRegister({ ...credentialsRegister, gender: e.target.value });
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
@@ -139,58 +315,94 @@ const Login = () => {
       <div style={styles.inputs}>
         {action !== "Login" && (
           <>
-            <div style={styles.input}>
-              <FontAwesomeIcon icon={faUser} style={styles.inputIcon} />
-              <input
-                type="text"
-                placeholder="Full Name"
-                style={styles.inputField}
-              />
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                width: "480px",
+                margin: "auto",
+              }}
+            >
+              <div style={{ ...styles.input, width: "235px" }}>
+                <FontAwesomeIcon icon={faUser} style={styles.inputIcon} />
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  id="firstName"
+                  style={styles.inputField}
+                  value={credentialsRegister.firstName}
+                  onChange={handleChange}
+                />
+              </div>
+              <div style={{ ...styles.input, width: "235px" }}>
+                <FontAwesomeIcon icon={faUser} style={styles.inputIcon} />
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  id="lastName"
+                  style={styles.inputField}
+                  value={credentialsRegister.lastName}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
             <div style={styles.input}>
-              <FontAwesomeIcon icon={faUser} style={styles.inputIcon} />
+              <FontAwesomeIcon icon={faUserNinja} style={styles.inputIcon} />
               <input
                 type="text"
                 placeholder="Username"
+                id="username"
                 style={styles.inputField}
+                value={credentialsRegister.username}
+                onChange={handleChange}
               />
             </div>
             <div style={styles.input}>
-              <FontAwesomeIcon icon={faVenusMars} style={styles.inputIcon} />
-              <Select
-                value={selectedOption}
-                onChange={handleChange}
-                options={options}
-                placeholder="Gender"
-                isClearable
-                styles={{
-                  control: (provided) => ({
-                    ...provided,
-                    width: "350px",
-                    margin: "10px 0",
-                    backgroundColor: "rgb(234, 234, 234)",
-                  }),
+              <FontAwesomeIcon icon={faUserNinja} style={styles.inputIcon} />
+
+              <select
+                id="gender"
+                value={credentialsRegister.gender}
+                onChange={handleGenderChange}
+                className="text-black p-4"
+                style={{
+                  color: "#797979",
+                  fontSize: "19px",
+                  background: "none",
+                  width: "380px",
                 }}
-              />
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
             </div>
             <div style={styles.input}>
               <FontAwesomeIcon icon={faGlobe} style={styles.inputIcon} />
               <ReactFlagsSelect
                 selected={selected}
-                onSelect={(code) => setSelected(code)}
-                className="countryselect" // Apply custom CSS class
+                className="countryselect"
+                onSelect={(code) => selectCountry(code)}
                 placeholder="Country"
                 searchable
                 searchPlaceholder="Search Country"
                 selectedSize={20}
                 fullWidth={false}
+                showSelectedLabel={true}
               />
             </div>
           </>
         )}
         <div style={styles.input}>
           <FontAwesomeIcon icon={faEnvelope} style={styles.inputIcon} />
-          <input type="text" placeholder="Email" style={styles.inputField} />
+          <input
+            type="text"
+            placeholder="Email"
+            id="email"
+            style={styles.inputField}
+            value={credentialsRegister.email}
+            onChange={handleChange}
+          />
         </div>
 
         <div style={styles.input}>
@@ -198,10 +410,13 @@ const Login = () => {
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
+            id="password"
             style={{
               ...styles.inputField,
               width: "360px",
             }}
+            value={credentialsRegister.password}
+            onChange={handleChange}
           />
           <FontAwesomeIcon
             icon={showPassword ? faEyeSlash : faEye}
@@ -225,7 +440,7 @@ const Login = () => {
               ? { ...styles.submit, ...styles.graySubmit }
               : { ...styles.submit, color: "white" } // Set color to white when "Sign Up" button is not selected
           }
-          onClick={() => setAction("Sign Up")}
+          onClick={setActionRegisterChange}
         >
           Sign Up
         </div>
@@ -235,11 +450,12 @@ const Login = () => {
               ? { ...styles.submit, ...styles.graySubmit }
               : { ...styles.submit, color: "white" } // Set color to white when "Login" button is not selected
           }
-          onClick={() => setAction("Login")}
+          onClick={setActionChange}
         >
           Login
         </div>
       </div>
+      <Toaster  position="top-left"/>
     </div>
   );
 };
