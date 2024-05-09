@@ -139,47 +139,53 @@ const ProfileBlogs = () => {
             </div>
 
             {/* Comment Modal */}
-           {/* Comment Modal */}
-{showCommentModal && (
-    <div className="fixed inset-0 top-0 right-0 bg-black bg-opacity-50 z-50  ">
-        <div className="bg-white p-4 w-full md:w-[50rem] left-0 h-screen  ">
-            <div className='flex justify-end'>
-                <button className="" onClick={handleCloseModal}>
-                    <FaTimes />
-                </button>
-            </div>
-            <h2 className="text-xl font-bold mb-4">Comments</h2>
-            <textarea
-                placeholder="Write your response..."
-                className="border-2 border-gray-500 focus:outline-none p-2 mb-4 w-full h-32 resize-none"
-            ></textarea>
-            {/* Sorting Dropdown */}
-            <select className="border-2 border-gray-500 focus:outline-none p-2 mb-4 w-full">
-                <option value="relevant">Most Relevant</option>
-                <option value="recent">Most Recent</option>
-            </select>
-            {/* Scrollable comments */}
-            <div className='max-h-[30rem]   overflow-y-auto'>
-                {/* Comments */}
-                {comments.map(comment => (
-                    <div key={comment.id} className="border-b border-gray-300 py-2 ">
-                        <p className="mb-2">{comment.text}</p>
-                        <div className="flex items-center space-x-2">
-                            <button className="flex items-center space-x-1 bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600 transition duration-300" onClick={() => handleVote(comment.id, 1)}>
-                                <FaArrowUp />
-                                <span className=" text-white">{comment.likevotes}</span>
-                            </button>
-                            <button className="flex items-center space-x-1 bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition duration-300" onClick={() => handleVote(comment.id, -1)}>
-                                <FaArrowDown />
-                                <span className=" text-white">{comment.unlikevotes}</span>
+            {showCommentModal && (
+                <div className="fixed inset-0 top-0 right-0 bg-black bg-opacity-50 z-50  ">
+                    <div className="bg-white p-4 w-full md:w-[50rem] left-0 h-screen  ">
+                        <div className='flex justify-end'>
+                            <button className="" onClick={handleCloseModal}>
+                                <FaTimes />
                             </button>
                         </div>
+                        <h2 className="text-xl font-bold mb-4">Comments</h2>
+                        <textarea
+                            placeholder="Write your response..."
+                            className="border-2 border-gray-500 focus:outline-none p-2 mb-4 w-full h-32 resize-none"
+                        ></textarea>
+                        {/* Sorting Dropdown */}
+                        <select className="border-2 border-gray-500 focus:outline-none p-2 mb-4 w-full">
+                            <option value="relevant">Most Relevant</option>
+                            <option value="recent">Most Recent</option>
+                        </select>
+                        {/* Scrollable comments */}
+                        <div className='max-h-[30rem]   overflow-y-auto'>
+                            {/* Comments */}
+                            {comments.map(comment => (
+                                <div key={comment.id} className=" border-b border-gray-300 py-2 ">
+                                    <div>
+
+                                        <p className="mb-2">{comment.text}</p>
+                                        <div className="flex items-center space-x-2">
+                                            <button className="flex items-center space-x-1 bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600 transition duration-300" onClick={() => handleVote(comment.id, 1)}>
+                                                <FaArrowUp />
+                                                <span className=" text-white">{comment.likevotes}</span>
+                                            </button>
+                                            <button className="flex items-center space-x-1 bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition duration-300" onClick={() => handleVote(comment.id, -1)}>
+                                                <FaArrowDown />
+                                                <span className=" text-white">{comment.unlikevotes}</span>
+                                            </button>
+                                            <div>
+                                                Reply
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                ))}
-            </div>
-        </div>
-    </div>
-)}
+                </div>
+            )}
 
         </div>
     );
