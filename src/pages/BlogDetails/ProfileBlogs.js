@@ -1,9 +1,7 @@
-
-
-
 import React, { useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { FaArrowUp, FaArrowDown, FaComment } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
 import homeimage from '../../assets/homeimage2.jpg';
 
 const ProfileBlogs = () => {
@@ -35,8 +33,9 @@ const ProfileBlogs = () => {
         { id: 23, text: "Really insightful post, thanks for sharing!", likevotes: 3, unlikevotes: 12 },
         { id: 24, text: "Really insightful post, thanks for sharing!", likevotes: 3, unlikevotes: 12 },
         { id: 25, text: "Really insightful post, thanks for sharing!", likevotes: 3, unlikevotes: 12 },
-        { id: 26, text: "I have a question about the method you used here.", likevotes: 1 , unlikevotes: 12}
+        { id: 26, text: "I have a question about the method you used here.", likevotes: 1, unlikevotes: 12 }
     ]);
+    const [showCommentModal, setShowCommentModal] = useState(false);
 
     const handleEditorChange = (content, editor) => {
         setContent(content);
@@ -62,19 +61,27 @@ const ProfileBlogs = () => {
         setComments(updatedComments);
     };
 
+    const handleCommentButtonClick = () => {
+        setShowCommentModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowCommentModal(false);
+    };
+
     return (
-        <div className="flex sm:flex-row flex-col">
+        <div className="flex flex-col lg:flex-row">
             {/* Left Column: User Profile */}
-            <div className="w-full sm:w-1/4 p-4 border-r border-gray-300 bg-white">
+            <div className="w-full lg:w-1/4 p-4 border-r border-gray-300 bg-white">
                 <div className="mb-4">
                     <img src={homeimage} alt="userprofile" className="w-20 h-20 rounded-full mx-auto mb-4" />
                     <h1 className="text-lg font-bold text-center">Username</h1>
-                    <p className="text-sm text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p className="text-sm text-center">User Bio Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 </div>
             </div>
 
             {/* Right Column: User Posts and Comments */}
-            <div className="w-full sm:w-3/4 p-4 bg-white">
+            <div className="w-full lg:w-3/4 p-4 bg-white relative">
                 {/* User Posts */}
                 <div className="mb-8">
                     <div className="mb-4">
@@ -114,7 +121,6 @@ const ProfileBlogs = () => {
                     </div>
                     <div className="flex justify-between items-center">
                         <div className='flex space-x-4'>
-
                             <button className="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300">
                                 <FaArrowUp />
                                 <span className=" text-white">{comments[0].likevotes}</span>
@@ -124,41 +130,57 @@ const ProfileBlogs = () => {
                                 <span className=" text-white">{comments[0].unlikevotes}</span>
                             </button>
                         </div>
-                        <button className="flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                        <button className="flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300" onClick={handleCommentButtonClick}>
                             <FaComment />
                             Comment
                         </button>
                     </div>
                 </div>
-
-                {/* User Comments */}
-                <div>
-                    <div className="mb-4">
-                        <p className="font-bold">Comments by others</p>
-                        {comments.map(comment => (
-                            <div key={comment.id} className="mb-4 bg-gray-100 p-2 rounded">
-                                <p>{comment.text}</p>
-                                <div className="flex justify-between items-center py-4">
-                                    <div className='flex space-x-2'>
-                                        <button onClick={() => handleVote(comment.id, 1)} className="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300">
-                                            <FaArrowUp />
-                                            <span className="">{comment.likevotes}</span>
-                                        </button>
-                                        <button onClick={() => handleVote(comment.id, -1)} className="flex items-center space-x-2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
-                                            <FaArrowDown />
-                                            <span className="">{comment.unlikevotes}</span>
-                                        </button>
-                                    </div>
-                                    <button className="flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
-                                        <FaComment />
-                                        Reply
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
             </div>
+
+            {/* Comment Modal */}
+           {/* Comment Modal */}
+{showCommentModal && (
+    <div className="fixed inset-0 top-0 right-0 bg-black bg-opacity-50 z-50  ">
+        <div className="bg-white p-4 w-full md:w-[50rem] left-0 h-screen  ">
+            <div className='flex justify-end'>
+                <button className="" onClick={handleCloseModal}>
+                    <FaTimes />
+                </button>
+            </div>
+            <h2 className="text-xl font-bold mb-4">Comments</h2>
+            <textarea
+                placeholder="Write your response..."
+                className="border-2 border-gray-500 focus:outline-none p-2 mb-4 w-full h-32 resize-none"
+            ></textarea>
+            {/* Sorting Dropdown */}
+            <select className="border-2 border-gray-500 focus:outline-none p-2 mb-4 w-full">
+                <option value="relevant">Most Relevant</option>
+                <option value="recent">Most Recent</option>
+            </select>
+            {/* Scrollable comments */}
+            <div className='max-h-[30rem]   overflow-y-auto'>
+                {/* Comments */}
+                {comments.map(comment => (
+                    <div key={comment.id} className="border-b border-gray-300 py-2 ">
+                        <p className="mb-2">{comment.text}</p>
+                        <div className="flex items-center space-x-2">
+                            <button className="flex items-center space-x-1 bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600 transition duration-300" onClick={() => handleVote(comment.id, 1)}>
+                                <FaArrowUp />
+                                <span className=" text-white">{comment.likevotes}</span>
+                            </button>
+                            <button className="flex items-center space-x-1 bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition duration-300" onClick={() => handleVote(comment.id, -1)}>
+                                <FaArrowDown />
+                                <span className=" text-white">{comment.unlikevotes}</span>
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+)}
+
         </div>
     );
 }

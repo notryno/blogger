@@ -1,47 +1,153 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 const Login = () => {
+  const [showLogin, setShowLogin] = useState(true);
+
+  const toggleForm = () => {
+    setShowLogin((prev) => !prev);
+  };
+
   return (
-    <div className='bg-gradient-to-r from-orange-500 to-orange-400 min-h-screen flex justify-center items-center'>
-      <div className='flex rounded-lg overflow-hidden shadow-xl'>
-        <div className='bg-white bg-opacity-75 p-8 flex items-center justify-center w-1/2'>
-          <div className='text-orange-800 text-4xl font-bold'>
-            Bloggers
-          </div>
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
+      <div className="max-w-md w-full space-y-8">
+        <div className="text-center">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            {showLogin ? "Sign in to your account" : "Create an account"}
+          </h2>
         </div>
-        <div className='bg-gray-800 p-8 w-1/2'>
+        <motion.form
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="mt-8 space-y-6"
+          action="#"
+          method="POST"
+        >
+          {/* Email (or Username) field */}
+          {!showLogin && (
+            <div>
+              <label htmlFor="email-address" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+              />
+            </div>
+          )}
+
+          {/* Password field */}
           <div>
-            <h1 className='text-orange-500 font-bold text-3xl'>
-              Login
-            </h1>
-            <p className='text-orange-500 font-thin'>
-              Welcome, let's get started!
-            </p>
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="Password"
+            />
           </div>
-          <form className='mt-4'>
-            <div className='mb-4'>
-              <label htmlFor='email' className='text-orange-500 text-xl font-semibold block'>Email</label>
-              <input type='email' placeholder='Enter your email' id='email' className='border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-orange-500 w-full'/>
+
+          {/* Additional fields for Signup */}
+          {!showLogin && (
+            <div>
+              <label htmlFor="first-name" className="sr-only">
+                First name
+              </label>
+              <input
+                id="first-name"
+                name="first-name"
+                type="text"
+                autoComplete="given-name"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="First name"
+              />
             </div>
-            <div className='mb-6'>
-              <label htmlFor='password' className='text-orange-500 text-xl font-semibold block'>Password</label>
-              <input type='password' placeholder='Enter your password' id='password' className='border border-gray-400 rounded px-3 py-2 focus:outline-none focus:border-orange-500 w-full'/>
+          )}
+
+          {!showLogin && (
+            <div>
+              <label htmlFor="last-name" className="sr-only">
+                Last name
+              </label>
+              <input
+                id="last-name"
+                name="last-name"
+                type="text"
+                autoComplete="family-name"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Last name"
+              />
             </div>
-            <div className='mb-6 text-orange-500'>
-              Don't have an account?
-              <Link to='/signup' className='text-orange-500 ml-1 font-semibold hover:text-orange-600'>Sign Up</Link>
+          )}
+
+          {!showLogin && (
+            <div>
+              <label htmlFor="gender" className="sr-only">
+                Gender
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                autoComplete="gender"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
             </div>
-            <div className='text-center'>
-              <button className='bg-orange-500 hover:bg-orange-600 py-2 px-5 rounded text-white'>
-                Login
-              </button>
-            </div>
-          </form>
-        </div>
+          )}
+
+          {/* Sign in / Sign up Button */}
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                <RiLockPasswordLine
+                  className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                  aria-hidden="true"
+                />
+              </span>
+              {showLogin ? "Sign in" : "Sign up"}
+            </button>
+          </div>
+        </motion.form>
+        {/* Toggle between login and signup forms */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-sm text-center"
+        >
+          <motion.button
+            type="button"
+            onClick={toggleForm}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            {showLogin ? "Create new account" : "Already have an account?"}
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );
-}
+};
 
 export default Login;
