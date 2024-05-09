@@ -22,12 +22,12 @@ const Home = () => {
                         <Link to='/blog'>
 
                             <div className='bg-[#e97442] py-2 px-5 rounded'>
-                                button 1
+                            Home pages
                             </div>
                         </Link>
                         <Link to='/login'>
                             <div className='bg-[#e97442] py-2 px-5 rounded'>
-                                button 2
+                                Login
 
                             </div>
                         </Link>

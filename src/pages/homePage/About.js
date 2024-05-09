@@ -26,7 +26,7 @@ const About = () => {
             <div className=''>
                 <Link to='/profileblogs'>
                     <button className='bg-[#242b31] py-2 px-5 rounded text-white font-semibold uppercase'>
-                        button
+                        REspective blog of a singleone
 
                     </button>
                 </Link>

@@ -21,7 +21,7 @@ const Aboutout = () => {
         <div className='text-right p-2'>
             <button className='bg-[#ffff] py-2 px-5 rounded font-bold uppercase'>
 
-                button
+                admin panel
             </button>
         </div>
       </div>
