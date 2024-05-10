@@ -83,8 +83,49 @@ const Navbar = () => {
           </div>
         ) : (
           <>
-            <Link to="/login" className="hidden md:flex text-white bg-blue-500 py-2 px-4 rounded hover:bg-blue-600"> Login</Link>
-            
+            {/* <Link to="/login" className="hidden md:flex text-white bg-blue-500 py-2 px-4 rounded hover:bg-blue-600"> Login</Link> */}
+            <div className="relative">
+            <div
+              className="flex items-center text-gray-300 cursor-pointer"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <span className="mr-2">hello</span>
+              <AiOutlineUser className="h-6 w-6" />
+            </div>
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg z-50">
+                <ul className="py-1">
+                  <li>
+                    <Link
+                      to="/profile"
+                      className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/userblogs"
+                      className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Profile Blogs
+                    </Link>
+                  </li>
+                  <li
+                    className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                    onClick={() => {
+                      handleLogout();
+                      setDropdownOpen(false);
+                    }}
+                  >
+                    Logout
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
             
           </>
         )}
