@@ -11,7 +11,7 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import ReactFlagsSelect from "react-flags-select";
-// import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
@@ -21,7 +21,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [selected, setSelected] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
-  // const { loading, dispatch } = useContext(AuthContext);
+  const { loading, dispatch } = useContext(AuthContext);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -124,8 +124,8 @@ const Login = () => {
   };
 
   const [credentials, setCredentials] = useState({
-    email: "ryano@gmail.com",
-    password: "Ryano@123",
+    email: '',
+    password: '',
   });
 
   const [credentialsRegister, setCredentialsRegister] = useState({
@@ -162,7 +162,7 @@ const Login = () => {
   console.log(credentialsRegister);
 
   const handleClick = async () => {
-    // dispatch({ type: "LOGIN_START" });
+    dispatch({ type: "LOGIN_START" });
 
     try {
       console.log(credentials);
@@ -172,29 +172,29 @@ const Login = () => {
         credentials
       );
 
-      // dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-      console.log(res);
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.token });
+      console.log(res.data.token);
       navigate("/");
     } catch (err) {
       if (err.response && err.response.data) {
-        // dispatch({
-        //   type: "LOGIN_FAILURE",
-        //   payload:
-        //     err.response.data.message ||
-        //     "An error occurred. Please try again later.",
-        // });
+        dispatch({
+          type: "LOGIN_FAILURE",
+          payload:
+            err.response.data.message ||
+            "An error occurred. Please try again later.",
+        });
       } else {
-        // dispatch({
-        //   type: "LOGIN_FAILURE",
-        //   payload: "An error occurred. Please try again later.",
-        // });
+        dispatch({
+          type: "LOGIN_FAILURE",
+          payload: "An error occurred. Please try again later.",
+        });
       }
     }
   };
 
   const handleClickRegister = async () => {
     // Perform full validation
-    
+
     const { firstName, lastName, email, gender, username, password, country } =
       credentialsRegister;
 
@@ -272,7 +272,7 @@ const Login = () => {
       console.error("Registration failed:", err);
       toast.error("Registration failed!!");
       // Display error message from server
-     
+
     }
   };
 
@@ -293,6 +293,7 @@ const Login = () => {
   };
 
   console.log(credentialsRegister);
+  console.log(credentials);
 
   const handleChange = (e) => {
     const { id, value } = e.target; // Destructure id and value from event target
@@ -304,6 +305,10 @@ const Login = () => {
 
   const handleGenderChange = (e) => {
     setCredentialsRegister({ ...credentialsRegister, gender: e.target.value });
+  };
+
+  const handleChangeLogin = (e) => {
+    setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
   return (
@@ -391,39 +396,75 @@ const Login = () => {
                 showSelectedLabel={true}
               />
             </div>
+            <div style={styles.input}>
+              <FontAwesomeIcon icon={faEnvelope} style={styles.inputIcon} />
+              <input
+                type="text"
+                placeholder="Email"
+                id="email"
+                style={styles.inputField}
+                value={credentialsRegister.email}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div style={styles.input}>
+              <FontAwesomeIcon icon={faLock} style={styles.inputIcon} />
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                id="password"
+                style={{
+                  ...styles.inputField,
+                  width: "360px",
+                }}
+                value={credentialsRegister.password}
+                onChange={handleChange}
+              />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                onClick={togglePasswordVisibility}
+                style={{ color: "grey", fontSize: "20px", cursor: "pointer" }}
+              />
+            </div>
           </>
         )}
-        <div style={styles.input}>
-          <FontAwesomeIcon icon={faEnvelope} style={styles.inputIcon} />
-          <input
-            type="text"
-            placeholder="Email"
-            id="email"
-            style={styles.inputField}
-            value={credentialsRegister.email}
-            onChange={handleChange}
-          />
-        </div>
+        {action !== "Sign Up" && (
+          <>
+            <div style={styles.input}>
+              <FontAwesomeIcon icon={faEnvelope} style={styles.inputIcon} />
+              <input
+                type="text"
+                placeholder="Email"
+                id="email"
+                style={styles.inputField}
+                value={credentials.email}
+                onChange={handleChangeLogin}
+              />
+            </div>
 
-        <div style={styles.input}>
-          <FontAwesomeIcon icon={faLock} style={styles.inputIcon} />
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            id="password"
-            style={{
-              ...styles.inputField,
-              width: "360px",
-            }}
-            value={credentialsRegister.password}
-            onChange={handleChange}
-          />
-          <FontAwesomeIcon
-            icon={showPassword ? faEyeSlash : faEye}
-            onClick={togglePasswordVisibility}
-            style={{ color: "grey", fontSize: "20px", cursor: "pointer" }}
-          />
-        </div>
+            <div style={styles.input}>
+              <FontAwesomeIcon icon={faLock} style={styles.inputIcon} />
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                id="password"
+                style={{
+                  ...styles.inputField,
+                  width: "360px",
+                }}
+                value={credentials.password}
+                onChange={handleChangeLogin}
+              />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                onClick={togglePasswordVisibility}
+                style={{ color: "grey", fontSize: "20px", cursor: "pointer" }}
+              />
+            </div>
+          </>
+
+        )}
       </div>
       {action === "Sign Up" ? (
         <div></div>
@@ -455,7 +496,7 @@ const Login = () => {
           Login
         </div>
       </div>
-      <Toaster  position="top-left"/>
+      <Toaster position="top-left" />
     </div>
   );
 };
