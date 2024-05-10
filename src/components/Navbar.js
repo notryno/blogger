@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { AiOutlineUser, AiOutlineLogout, AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineUser, AiOutlineLogout, AiOutlineMenu, AiOutlineClose, AiOutlineBell } from 'react-icons/ai';
 import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
   const { user, dispatch } = useContext(AuthContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -15,9 +16,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center py-4 px-6 bg-gray-900">
-      <div className="flex items-center">
-        <span className="text-white text-lg font-semibold mr-4 uppercase">BLoggit</span>
+    <nav className="flex justify-between items-center py-4 px-6 bg-gray-900 fixed top-0 w-full z-50">
+      <div className="flex items-center text-3xl py-2">
+        <Link to='/'>
+        <h1 className="text-white text-3xl font-semibold mr-4 uppercase">BLoggit</h1>
+        </Link>
         <div className="hidden md:flex space-x-4">
           <Link
             to="/"
@@ -38,17 +41,43 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center space-x-4">
+        <div className="relative">
+          <div
+            className="flex items-center text-gray-300 cursor-pointer "
+            onClick={() => setNotificationOpen(!notificationOpen)}
+          >
+            <AiOutlineBell className="text-4xl " />
+          </div>
+          {notificationOpen && (
+            <div className="absolute right-0 mt-2 w-40 bg-gray-100 rounded-lg shadow-lg z-50">
+              <ul className="py-1">
+                <li className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block">
+                  Notification 1
+                </li>
+                <li className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block">
+                  Notification 2
+                </li>
+                <li className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block">
+                  Notification 3
+                </li>
+                <li className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block">
+                  Clear Notifications
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
         {user ? (
           <div className="relative">
             <div
-              className="flex items-center text-gray-300 cursor-pointer"
+              className="flex items-center text-gray-300 cursor-pointer px-2"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              <span className="mr-2">hello</span>
-              <AiOutlineUser className="h-6 w-6" />
+              <span className="mr-2 text-2xl ">hello</span>
+              <AiOutlineUser className="text-3xl" />
             </div>
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg z-50">
+              <div className="absolute right-0 mt-2 w-40 bg-gray-100 rounded-lg shadow-lg z-50">
                 <ul className="py-1">
                   <li>
                     <Link
@@ -83,55 +112,52 @@ const Navbar = () => {
           </div>
         ) : (
           <>
-            {/* <Link to="/login" className="hidden md:flex text-white bg-blue-500 py-2 px-4 rounded hover:bg-blue-600"> Login</Link> */}
             <div className="relative">
-            <div
-              className="flex items-center text-gray-300 cursor-pointer"
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-            >
-              <span className="mr-2">hello</span>
-              <AiOutlineUser className="h-6 w-6" />
-            </div>
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg z-50">
-                <ul className="py-1">
-                  <li>
-                    <Link
-                      to="/profile"
-                      className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/userblogs"
-                      className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      Profile Blogs
-                    </Link>
-                  </li>
-                  <li
-                    className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
-                    onClick={() => {
-                      handleLogout();
-                      setDropdownOpen(false);
-                    }}
-                  >
-                    Logout
-                  </li>
-                </ul>
+              <div
+                className="flex items-center text-gray-300 cursor-pointer"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                <span className="mr-2">hello</span>
+                <AiOutlineUser className="h-6 w-6" />
               </div>
-            )}
-          </div>
-            
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-gray-100 rounded-lg shadow-lg z-50">
+                  <ul className="py-1">
+                    <li>
+                      <Link
+                        to="/profile"
+                        className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/userblogs"
+                        className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Profile Blogs
+                      </Link>
+                    </li>
+                    <li
+                      className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                      onClick={() => {
+                        handleLogout();
+                        setDropdownOpen(false);
+                      }}
+                    >
+                      Logout
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </>
         )}
       </div>
       <div className="md:hidden">
-        {/* Hamburger menu icon */}
         <button
           className="text-white focus:outline-none"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
