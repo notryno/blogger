@@ -9,21 +9,22 @@ import ProfileBlogs from "./pages/BlogDetails/ProfileBlogs";
 import Profile from "./pages/Profile/Profile";
 import UserBlogs from "./pages/BlogDetails/UserBlogs";
 import AddBlog from "./pages/Blog/AddBlog";
-
+import EditProfile from "./pages/Profile/EditProfile";
 function App() {
   return (
     <div className="overflow-hidden">
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/blog' element={<Blog />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
-          <Route path='/profileblogs' element={<ProfileBlogs />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/userblogs' element={<UserBlogs/>}/>
+          <Route path="/" element={<Home />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/profileblogs" element={<ProfileBlogs />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/userblogs" element={<UserBlogs />} />
           <Route path="/add-blog" element={<AddBlog />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Routes>
       </BrowserRouter>
     </div>

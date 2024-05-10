@@ -1,6 +1,10 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPen,
+  faComment,
+  faThumbsUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
   const styles = {
@@ -23,7 +27,7 @@ const Profile = () => {
       height: "200px",
       top: "150px",
       position: "relative",
-      left: "180px",
+      left: "130px",
       borderRadius: "50%",
       overflow: "hidden",
       border: "6px white solid",
@@ -53,7 +57,7 @@ const Profile = () => {
           <h1
             style={{
               position: "relative",
-              left: "200px",
+              left: "150px",
               top: "120px",
               fontSize: "35px",
             }}
@@ -63,7 +67,7 @@ const Profile = () => {
           <p
             style={{
               marginTop: "auto",
-              marginLeft: "128px",
+              marginLeft: "77px",
               marginBottom: "50px",
             }}
           >
@@ -112,7 +116,7 @@ const Profile = () => {
           </div>
           <div
             style={{
-              marginRight: "30px",
+              marginRight: "150px",
               marginTop: "120px",
               marginBottom: "auto",
               backgroundColor: "#f0f7ff",
@@ -130,14 +134,17 @@ const Profile = () => {
             >
               212
             </h1>
-            <h1 style={{ color: "#1d2c5e" }}>Total Comments</h1>
+            <h1 style={{ color: "#1d2c5e" }}>Reactions</h1>
           </div>
         </div>
+        <hr
+          style={{ width: "82%", margin: "auto", borderTop: "1px solid #ccc" }}
+        />
         <div style={{ display: "flex", height: "100%" }}>
           <div
             style={{
               marginTop: "10px",
-              marginLeft: "105px",
+              marginLeft: "58px",
             }}
           >
             <h1
@@ -145,6 +152,7 @@ const Profile = () => {
                 fontSize: "30px",
                 alignContent: "center",
                 marginLeft: "90px",
+                paddingBottom: "25px",
               }}
             >
               Blogs
@@ -160,24 +168,185 @@ const Profile = () => {
               }}
             >
               <img
-                src="https://source.unsplash.com/random/800x600/?mountain"
+                src="https://source.unsplash.com/random/1920x1080/?mountain"
                 alt="Mountain"
                 style={{
                   maxWidth: "100%",
                   maxHeight: "100%",
                   objectFit: "contain",
+                  borderRadius: "15px",
                 }}
               />
+              <p>
+                I clicked this photo using my new Samsung Galaxy S24 Ultra.
+                <br />
+                <strong>#MobilePhotography</strong>{" "}
+                <strong>#Photography</strong> <strong>#Mountain</strong>{" "}
+                <strong>#Beautiful</strong>
+              </p>
             </div>
           </div>
           <div
             style={{
-              backgroundColor: "red",
-              width: "700vh",
-              marginRight: "190px",
+              backgroundColor: "white",
+              height: "70vh",
+              width: "550px",
+              position: "relative",
+              right: "157px",
+              top: "5px",
+              // border: "1px solid black",
+              borderRadius: "5px",
+              display: "flex",
+              justifyContent: "space-between", // Adjust alignment
+              alignItems: "left",
+              padding: "5px", // Add padding for space between cards
+              flexDirection: "column",
+              gap: "20px",
             }}
           >
-            Commnets
+            <h1 style={{ fontSize: "30px" }}>2 Comments</h1>
+            {/* First Card */}
+            <div
+              style={{
+                backgroundColor: "#f2efff",
+                width: "100%",
+                borderRadius: "10px",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                padding: "20px",
+                marginBottom: "20px", // Add margin bottom for space between cards
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <div>
+                <h2 style={{ paddingBottom: "10px" }}>
+                  5 ways to start a conversation.
+                </h2>
+                <p>
+                  1. Try to talk about Valorannt
+                  <br />
+                  2. Be nice to them.
+                </p>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between", // Align icons to right side
+                  alignItems: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <div>
+                  <FontAwesomeIcon
+                    icon={faThumbsUp}
+                    style={{ marginRight: "10px" }}
+                  />
+                  <span>10 Likes</span>
+                </div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faComment}
+                    style={{ marginRight: "10px" }}
+                  />
+                  <span>5 Comments</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Second Card */}
+            <div
+              style={{
+                backgroundColor: "#f2efff",
+                width: "100%",
+                borderRadius: "10px",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                padding: "20px",
+                marginBottom: "20px", // Add margin bottom for space between cards
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <div>
+                <h2 style={{ paddingBottom: "10px" }}>
+                  3 places to visit in Pokhara.
+                </h2>
+                <p>
+                  There are many but here are the three:
+                  <br />
+                  Fewa Lake, David Fall, Lakeside.
+                </p>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between", // Align icons to right side
+                  alignItems: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <div>
+                  <FontAwesomeIcon
+                    icon={faThumbsUp}
+                    style={{ marginRight: "10px" }}
+                  />
+                  <span>50 Likes</span>
+                </div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faComment}
+                    style={{ marginRight: "10px" }}
+                  />
+                  <span>57 Comments</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Third Card */}
+            <div
+              style={{
+                backgroundColor: "#f2efff",
+                width: "100%",
+                borderRadius: "10px",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                padding: "20px",
+                marginBottom: "20px", // Add margin bottom for space between cards
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <div>
+                <h2 style={{ paddingBottom: "10px" }}>
+                  3 places to eat near Baneshwor
+                </h2>
+                <p>
+                  There are many but here are the three: Momo Pasal, Khulfi
+                  Pasal Side, Chowmein Pasal
+                </p>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between", // Align icons to right side
+                  alignItems: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <div>
+                  <FontAwesomeIcon
+                    icon={faThumbsUp}
+                    style={{ marginRight: "10px" }}
+                  />
+                  <span>17 Likes</span>
+                </div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faComment}
+                    style={{ marginRight: "10px" }}
+                  />
+                  <span>15 Comments</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
