@@ -1,25 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Editor } from "@tinymce/tinymce-react";
+import axios from "axios";
 
 import { FaArrowUp, FaArrowDown, FaComment } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import homeimage from "../../assets/homeimage2.jpg";
 
+import { AuthContext } from "../../context/AuthContext";
+
 const AddBlog = () => {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [images, setImages] = useState([]);
+  const { user } = useContext(AuthContext);
 
   const handleEditorChange = (content, editor) => {
     setContent(content);
     console.log("Content was updated:", content);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Title:", title);
     console.log("Content:", content);
     console.log("Images:", images[0]);
+
+    console.log("Author:", user);
+
+    try {
+      // Make Axios POST request
+      const response = await axios.post("http://localhost:5079/api/Blogs", {
+        title: title,
+        content: content,
+        image: images,
+        author: user.Id,
+      });
+
+      console.log("Post request response:", response.data);
+
+      // Clear form fields after successful submission
+      setTitle("");
+      setContent("");
+      setImages([]);
+    } catch (error) {
+      console.error("Error submitting post:", error);
+      // Handle error appropriately (e.g., display an error message to the user)
+    }
   };
 
   const handleImageUpload = async (blobInfo) => {
