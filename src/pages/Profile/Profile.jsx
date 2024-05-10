@@ -4,16 +4,18 @@ import {
   faPen,
   faComment,
   faThumbsUp,
+  faThumbsDown,
+  faArrowUp,
+  faArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const navigate = useNavigate();
 
-
   const handleClick = () => {
-    navigate('/edit-profile')
-  }
+    navigate("/edit-profile");
+  };
   const styles = {
     header: {
       background: "#cc95c0",
@@ -185,18 +187,35 @@ const Profile = () => {
                 }}
               />
               <div className="mt-4 ">
-
                 <div>
                   <div className="text-3xl font-bold py-4">
-
                     I clicked this photo using my new Samsung Galaxy S24 Ultra.
                   </div>
                   <div className="flex space-x-4 py-2   ">
-
-                    <div className="p-4 rounded-full bg-gray-600 " style={{backgroundColor: 'lightgray'}}>#MobilePhotography</div>
-                    <div className="p-4 rounded-full bg-gray-600" style={{backgroundColor: 'lightgray'}}>#Photography</div> 
-                    <div className="p-4 px-6 rounded-full bg-gray-600" style={{backgroundColor: 'lightgray'}}>#Mountain</div>
-                    <div className="p-4 px-6 rounded-full bg-gray-600" style={{backgroundColor: 'lightgray'}}>#Beautiful</div>
+                    <div
+                      className="p-4 rounded-full bg-gray-600 "
+                      style={{ backgroundColor: "lightgray" }}
+                    >
+                      #MobilePhotography
+                    </div>
+                    <div
+                      className="p-4 rounded-full bg-gray-600"
+                      style={{ backgroundColor: "lightgray" }}
+                    >
+                      #Photography
+                    </div>
+                    <div
+                      className="p-4 px-6 rounded-full bg-gray-600"
+                      style={{ backgroundColor: "lightgray" }}
+                    >
+                      #Mountain
+                    </div>
+                    <div
+                      className="p-4 px-6 rounded-full bg-gray-600"
+                      style={{ backgroundColor: "lightgray" }}
+                    >
+                      #Beautiful
+                    </div>
                   </div>
                 </div>
               </div>
@@ -254,10 +273,17 @@ const Profile = () => {
               >
                 <div>
                   <FontAwesomeIcon
-                    icon={faThumbsUp}
+                    icon={faArrowUp}
                     style={{ marginRight: "10px" }}
                   />
-                  <span>10 Likes</span>
+                  <span>10 Upvotes</span>
+                </div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faArrowDown}
+                    style={{ marginRight: "10px" }}
+                  />
+                  <span>3 Downvotes</span>
                 </div>
                 <div>
                   <FontAwesomeIcon
@@ -302,10 +328,17 @@ const Profile = () => {
               >
                 <div>
                   <FontAwesomeIcon
-                    icon={faThumbsUp}
+                    icon={faArrowUp}
                     style={{ marginRight: "10px" }}
                   />
-                  <span>50 Likes</span>
+                  <span>10 Upvotes</span>
+                </div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faArrowDown}
+                    style={{ marginRight: "10px" }}
+                  />
+                  <span>3 Downvotes</span>
                 </div>
                 <div>
                   <FontAwesomeIcon
@@ -349,10 +382,17 @@ const Profile = () => {
               >
                 <div>
                   <FontAwesomeIcon
-                    icon={faThumbsUp}
+                    icon={faArrowUp}
                     style={{ marginRight: "10px" }}
                   />
-                  <span>17 Likes</span>
+                  <span>10 Upvotes</span>
+                </div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faArrowDown}
+                    style={{ marginRight: "10px" }}
+                  />
+                  <span>3 Downvotes</span>
                 </div>
                 <div>
                   <FontAwesomeIcon
