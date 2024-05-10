@@ -113,7 +113,7 @@ function EditProfile() {
    }
 
   return (
-    <div className="p-6 bg-gray-200">
+    <div className="mt-40 p-6 bg-gray-200">
       <h1 className="text-center text-blue-500 text-2xl font-bold mb-4">Edit Profile</h1>
       <hr />
       <div className="flex justify-center">

@@ -50,7 +50,7 @@ const UserBlogs = () => {
         setComments(updatedComments);
     };
     return (
-        <div className=''>
+        <div className='mt-[9rem]'>
             <div className="relative w-[80rem] h-[45rem] m-auto mt-[5rem]">
                 <img src={homeimage} alt="" className="object-cover w-full h-full" />
                 <div className="absolute bottom-0 left-0 p-4 text-white bg-black bg-opacity-50 text-8xl font-serif">

@@ -35,6 +35,7 @@ const Login = () => {
       marginTop: "10px",
       backgroundColor: "white",
       paddingBottom: "10px",
+      marginTop: '3rem',
     },
     header: {
       display: "flex",
@@ -310,9 +311,12 @@ const Login = () => {
   const handleChangeLogin = (e) => {
     setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
+  const handleForgotPassword = (e) => {
+    navigate('/reset-password')
+  }
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} >
       <div style={styles.header}>
         <div style={styles.text}>{action}</div>
         <div style={styles.underline}></div>
@@ -471,7 +475,7 @@ const Login = () => {
       ) : (
         <div style={styles.forgotPassword}>
           Forgot Password?{" "}
-          <span style={styles.forgotPasswordSpan}>Click here</span>
+          <span style={styles.forgotPasswordSpan} onClick={handleForgotPassword}>Click here</span>
         </div>
       )}
       <div style={styles.submitContainer}>
