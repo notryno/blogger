@@ -5,8 +5,15 @@ import {
   faComment,
   faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+
+  const handleClick = () => {
+    navigate('/edit-profile')
+  }
   const styles = {
     header: {
       background: "#cc95c0",
@@ -88,6 +95,7 @@ const Profile = () => {
               marginBottom: "auto",
               transition: "background-color 0.3s ease",
             }}
+            onClick={handleClick}
           >
             <FontAwesomeIcon icon={faPen} style={{ marginRight: "5px" }} />
             Edit
@@ -159,7 +167,6 @@ const Profile = () => {
             </h1>
             <div
               style={{
-                overflow: "hidden",
                 height: "500px",
                 width: "130vh",
                 marginLeft: "90px",
@@ -177,18 +184,27 @@ const Profile = () => {
                   borderRadius: "15px",
                 }}
               />
-              <p>
-                I clicked this photo using my new Samsung Galaxy S24 Ultra.
-                <br />
-                <strong>#MobilePhotography</strong>{" "}
-                <strong>#Photography</strong> <strong>#Mountain</strong>{" "}
-                <strong>#Beautiful</strong>
-              </p>
+              <div className="mt-4 ">
+
+                <div>
+                  <div className="text-3xl font-bold py-4">
+
+                    I clicked this photo using my new Samsung Galaxy S24 Ultra.
+                  </div>
+                  <div className="flex space-x-4 py-2   ">
+
+                    <div className="p-4 rounded-full bg-gray-600 " style={{backgroundColor: 'lightgray'}}>#MobilePhotography</div>
+                    <div className="p-4 rounded-full bg-gray-600" style={{backgroundColor: 'lightgray'}}>#Photography</div> 
+                    <div className="p-4 px-6 rounded-full bg-gray-600" style={{backgroundColor: 'lightgray'}}>#Mountain</div>
+                    <div className="p-4 px-6 rounded-full bg-gray-600" style={{backgroundColor: 'lightgray'}}>#Beautiful</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div
             style={{
-              backgroundColor: "white",
+              backgroundColor: "lightghite",
               height: "70vh",
               width: "550px",
               position: "relative",

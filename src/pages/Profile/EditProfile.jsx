@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import "./EditProfile.css";
+import { useNavigate } from "react-router-dom";
 
 function EditProfile() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [firstName, setFirstName] = useState("dey-dey");
   const [lastName, setLastName] = useState("bootdey");
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("janesemail@gmail.com");
   const [newPassword, setNewPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
   const [usernameError, setUsernameError] = useState("");
+  const navigate = useNavigate()
 
   const handleImageChange = (e) => {
     console.log("Image selected:", e.target.files[0]);
@@ -108,108 +108,115 @@ function EditProfile() {
       console.log("Form validation failed!");
     }
   };
+   const handleCancel = () => {
+    navigate('/profile')
+   }
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1 style={{ textAlign: "center", color: "#007bff" }}>Edit Profile</h1>
+    <div className="p-6 bg-gray-200">
+      <h1 className="text-center text-blue-500 text-2xl font-bold mb-4">Edit Profile</h1>
       <hr />
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{ width: "300px", marginRight: "20px" }}>
-          <div style={{ textAlign: "center" }}>
+      <div className="flex justify-center">
+        <div className="w-64 mr-4">
+          <div className="text-center">
             <img
               src={
                 selectedImage
                   ? selectedImage
                   : "https://bootdey.com/img/Content/avatar/avatar7.png"
               }
-              style={{ borderRadius: "50%", width: "200px", height: "200px" }}
+              className="rounded-full w-48 h-48 mx-auto mb-4"
               alt="avatar"
             />
-            <h6>Upload a different photo...</h6>
+            <label htmlFor="imageUpload" className="cursor-pointer text-blue-500 text-3xl font-bold ">Upload Photo</label>
             <input
               type="file"
-              style={{ marginBottom: "10px" }}
+              className="hidden"
               onChange={handleImageChange}
+              id="imageUpload"
             />
           </div>
+
         </div>
 
-        <div style={{ width: "400px" }}>
-          <h3 style={{ marginBottom: "20px" }}>Personal info</h3>
+
+        <div className="w-96">
+          <h3 className="mb-6 text-xl font-semibold">Personal info</h3>
           <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ marginRight: "20px" }}>First name:</label>
+            <div className="mb-4  ">
+              <label className="mr-4 font-bold text-gray-800">First name:</label>
+
               <input
                 type="text"
                 value={firstName}
                 onChange={handleFirstNameChange}
+                className="flex items-end mt-2 border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
               />
               {firstNameError && (
-                <div style={{ color: "red" }}>{firstNameError}</div>
+                <div className="text-red-500">{firstNameError}</div>
               )}
             </div>
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ marginRight: "20px" }}>Last name:</label>
+            <div className="mb-4">
+              <label className="mr-4 font-bold text-gray-800">Last name:</label>
               <input
                 type="text"
                 value={lastName}
                 onChange={handleLastNameChange}
+                className="flex items-end mt-2 border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
               />
               {lastNameError && (
-                <div style={{ color: "red" }}>{lastNameError}</div>
+                <div className="text-red-500">{lastNameError}</div>
               )}
             </div>
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ marginRight: "20px" }}>Username:</label>
+            <div className="mb-4 ">
+              <label className="mr-4 font-bold text-gray-800">Username:</label>
               <input
                 type="text"
                 value={username}
                 onChange={handleUsernameChange}
+                className="flex items-end mt-2 border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
               />
               {usernameError && (
-                <div style={{ color: "red" }}>{usernameError}</div>
+                <div className="text-red-500">{usernameError}</div>
               )}
             </div>
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ marginRight: "20px" }}>Email:</label>
-              <input type="text" value={email} disabled />
-            </div>
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ marginRight: "20px" }}>New Password:</label>
+            <div className="mb-4">
+              <label className="mr-4 font-bold text-gray-800">New Password:</label>
               <input
                 type="password"
                 value={newPassword}
                 onChange={handlePasswordChange}
+                className="flex items-end mt-2 border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
               />
               {passwordError && (
-                <div style={{ color: "red" }}>{passwordError}</div>
+                <div className="text-red-500">{passwordError}</div>
               )}
             </div>
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ marginRight: "20px" }}>Confirm Password:</label>
+            <div className="mb-4">
+              <label className="mr-4 font-bold text-gray-800">Confirm Password:</label>
               <input
                 type="password"
                 value={newPassword}
                 onChange={handlePasswordChange}
+                className="flex items-end mt-2 border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
               />
               {passwordError && (
-                <div style={{ color: "red" }}>{passwordError}</div>
+                <div className="text-red-500">{passwordError}</div>
               )}
             </div>
-            <div style={{ textAlign: "center" }}>
-              <button
-                type="submit"
-                style={{
-                  padding: "10px 20px",
-                  backgroundColor: "#007bff",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                Save Changes
-              </button>
+            <div className="flex space-x-4">
+
+              <div className="text-center py-4">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg border-none cursor-pointer hover:bg-blue-600"
+                >
+                  Save Changes
+                </button>
+              </div>
+              <div className="py-4">
+                <button className="bg-red-500 text-white px-4 py-2 rounded-lg" onClick={handleCancel}>Cancel</button>
+              </div>
             </div>
           </form>
         </div>
