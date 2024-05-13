@@ -1,59 +1,122 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPen,
-  faComment,
-  faThumbsUp,
-} from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-const Profile = () => {
+function EditProfile() {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [usernameError, setUsernameError] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("token")
   console.log(token)
   const decodedToken = jwtDecode(token);
   console.log(decodedToken)
 
+  const handleImageChange = (e) => {
+    console.log("Image selected:", e.target.files[0]);
+    const file = e.target.files[0];
+    const reader = new FileReader();
 
-  const handleClick = () => {
-    navigate('/edit-profile')
-  }
-  const styles = {
-    header: {
-      background: "#cc95c0",
-      background:
-        "-webkit-linear-gradient(to right, #cc95c0, #dbd4b4, #7aa1d2)",
-      background: "linear-gradient(to right, #cc95c0, #dbd4b4, #7aa1d2)",
-      width: "100%",
-      height: "250px",
-    },
-    Main: {
-      backgroundColor: "white",
-      width: "100%",
-      height: "100%",
-    },
-    imgdiv: {
-      backgroundColor: "green",
-      width: "200px",
-      height: "200px",
-      top: "150px",
-      position: "relative",
-      left: "130px",
-      borderRadius: "50%",
-      overflow: "hidden",
-      border: "6px white solid",
+    reader.onloadend = () => {
+      setSelectedImage(reader.result);
+    };
 
-      boxShadow:
-        "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
-    },
-    details: {
-      display: "flex",
-      backgroundColor: "white",
-      width: "100%",
-      height: "250px",
-    },
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   };
+
+  const validateFirstName = (value) => {
+    if (!value) {
+      setFirstNameError("First name is required");
+      return false;
+    } else if (/\d/.test(value)) {
+      setFirstNameError("First name cannot contain numbers");
+      return false;
+    } else {
+      setFirstNameError("");
+      return true;
+    }
+  };
+
+  const validateLastName = (value) => {
+    if (!value) {
+      setLastNameError("Last name is required");
+      return false;
+    } else if (/\d/.test(value)) {
+      setLastNameError("Last name cannot contain numbers");
+      return false;
+    } else {
+      setLastNameError("");
+      return true;
+    }
+  };
+
+  const validateUsername = (value) => {
+    if (!value) {
+      setUsernameError("Username is required");
+      return false;
+    } else {
+      setUsernameError("");
+      return true;
+    }
+  };
+
+  const handleFirstNameChange = (e) => {
+    const value = e.target.value;
+    setFirstName(value);
+    validateFirstName(value);
+  };
+
+  const handleLastNameChange = (e) => {
+    const value = e.target.value;
+    setLastName(value);
+    validateLastName(value);
+  };
+
+  const handleUsernameChange = (e) => {
+    const value = e.target.value;
+    setUsername(value);
+    validateUsername(value);
+  };
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setNewPassword(newPassword);
+    if (newPassword.length < 8) {
+      setPasswordError("Password must be at least 8 characters long");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Validate all fields before submitting
+    const isValid =
+      validateFirstName(firstName) &&
+      validateLastName(lastName) &&
+      validateUsername(username) &&
+      newPassword.length >= 8;
+
+    if (isValid) {
+      // Perform form submission
+      console.log("Form submitted successfully!");
+    } else {
+      console.log("Form validation failed!");
+    }
+  };
+  const handleCancel = () => {
+    navigate("/profile");
+  };
+
   return (
     <div style={{ height: "200vh" }}>
       <div style={styles.header}>
@@ -186,24 +249,36 @@ const Profile = () => {
               }}
             >
               <img
-                src="https://source.unsplash.com/random/1920x1080/?mountain"
-                alt="Mountain"
+                src={
+                  selectedImage
+                    ? selectedImage
+                    : "https://bootdey.com/img/Content/avatar/avatar7.png"
+                }
+                className="mb-4 cursor-pointer"
                 style={{
-                  maxWidth: "100%",
-                  maxHeight: "100%",
-                  objectFit: "contain",
-                  borderRadius: "15px",
+                  borderRadius: "50%",
+                  width: "400px",
+                  height: "400px",
                 }}
+                alt="avatar"
               />
-              <div className="mt-4 ">
+            </label>
+            <input
+              type="file"
+              className="hidden"
+              onChange={handleImageChange}
+              id="imageUpload"
+            />
+          </div>
+        </div>
 
-                <div>
-                  <div className="text-3xl font-bold py-4">
-
-                    I clicked this photo using my new Samsung Galaxy S24 Ultra.
-                  </div>
-                  <div className="flex space-x-4 py-2   ">
-
+        <div className="w-96">
+          <h3 className="mb-6 text-xl font-semibold">Personal info</h3>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4  ">
+              <label className="mr-4 font-bold text-gray-800">
+                First name:
+              </label>
                     <div className="p-4 rounded-full bg-gray-600 " style={{ backgroundColor: 'lightgray' }}>#MobilePhotography</div>
                     <div className="p-4 rounded-full bg-gray-600" style={{ backgroundColor: 'lightgray' }}>#Photography</div>
                     <div className="p-4 px-6 rounded-full bg-gray-600" style={{ backgroundColor: 'lightgray' }}>#Mountain</div>
@@ -212,173 +287,88 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            style={{
-              backgroundColor: "lightghite",
-              height: "70vh",
-              width: "550px",
-              position: "relative",
-              right: "157px",
-              top: "5px",
-              // border: "1px solid black",
-              borderRadius: "5px",
-              display: "flex",
-              justifyContent: "space-between", // Adjust alignment
-              alignItems: "left",
-              padding: "5px", // Add padding for space between cards
-              flexDirection: "column",
-              gap: "20px",
-            }}
-          >
-            <h1 style={{ fontSize: "30px" }}>2 Comments</h1>
-            {/* First Card */}
-            <div
-              style={{
-                backgroundColor: "#f2efff",
-                width: "100%",
-                borderRadius: "10px",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                padding: "20px",
-                marginBottom: "20px", // Add margin bottom for space between cards
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <div>
-                <h2 style={{ paddingBottom: "10px" }}>
-                  5 ways to start a conversation.
-                </h2>
-                <p>
-                  1. Try to talk about Valorannt
-                  <br />
-                  2. Be nice to them.
-                </p>
+            <div className="mb-4">
+              <label className="mr-4 font-bold text-gray-800">Last name:</label>
+              <input
+                type="text"
+                value={lastName}
+                onChange={handleLastNameChange}
+                className="flex items-end mt-2 border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
+                style={{ width: "300px" }}
+              />
+              {lastNameError && (
+                <div className="text-red-500">{lastNameError}</div>
+              )}
+            </div>
+            <div className="mb-4 ">
+              <label className="mr-4 font-bold text-gray-800">Username:</label>
+              <input
+                type="text"
+                value={username}
+                onChange={handleUsernameChange}
+                className="flex items-end mt-2 border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
+                style={{ width: "300px" }}
+              />
+              {usernameError && (
+                <div className="text-red-500">{usernameError}</div>
+              )}
+            </div>
+            <div className="mb-4">
+              <label className="mr-4 font-bold text-gray-800">
+                New Password:
+              </label>
+              <input
+                type="password"
+                value={newPassword}
+                onChange={handlePasswordChange}
+                className="flex items-end mt-2 border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
+                style={{ width: "300px" }}
+              />
+              {passwordError && (
+                <div className="text-red-500">{passwordError}</div>
+              )}
+            </div>
+            <div className="mb-4">
+              <label className="mr-4 font-bold text-gray-800">
+                Confirm Password:
+              </label>
+              <input
+                type="password"
+                value={newPassword}
+                onChange={handlePasswordChange}
+                className="flex items-end mt-2 border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
+                style={{ width: "300px" }}
+              />
+              {passwordError && (
+                <div className="text-red-500">{passwordError}</div>
+              )}
+            </div>
+            <div className="flex space-x-4">
+              <div className="text-center py-4">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg border-none cursor-pointer hover:bg-blue-600"
+                  style={{ width: "140px" }}
+                >
+                  Save Changes
+                </button>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between", // Align icons to right side
-                  alignItems: "center",
-                  marginTop: "20px",
-                }}
-              >
-                <div>
-                  <FontAwesomeIcon
-                    icon={faThumbsUp}
-                    style={{ marginRight: "10px" }}
-                  />
-                  <span>10 Likes</span>
-                </div>
-                <div>
-                  <FontAwesomeIcon
-                    icon={faComment}
-                    style={{ marginRight: "10px" }}
-                  />
-                  <span>5 Comments</span>
-                </div>
+              <div className="py-4">
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                  style={{ width: "140px" }}
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
-
-            {/* Second Card */}
-            <div
-              style={{
-                backgroundColor: "#f2efff",
-                width: "100%",
-                borderRadius: "10px",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                padding: "20px",
-                marginBottom: "20px", // Add margin bottom for space between cards
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <div>
-                <h2 style={{ paddingBottom: "10px" }}>
-                  3 places to visit in Pokhara.
-                </h2>
-                <p>
-                  There are many but here are the three:
-                  <br />
-                  Fewa Lake, David Fall, Lakeside.
-                </p>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between", // Align icons to right side
-                  alignItems: "center",
-                  marginTop: "20px",
-                }}
-              >
-                <div>
-                  <FontAwesomeIcon
-                    icon={faThumbsUp}
-                    style={{ marginRight: "10px" }}
-                  />
-                  <span>50 Likes</span>
-                </div>
-                <div>
-                  <FontAwesomeIcon
-                    icon={faComment}
-                    style={{ marginRight: "10px" }}
-                  />
-                  <span>57 Comments</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Third Card */}
-            <div
-              style={{
-                backgroundColor: "#f2efff",
-                width: "100%",
-                borderRadius: "10px",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                padding: "20px",
-                marginBottom: "20px", // Add margin bottom for space between cards
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <div>
-                <h2 style={{ paddingBottom: "10px" }}>
-                  3 places to eat near Baneshwor
-                </h2>
-                <p>
-                  There are many but here are the three: Momo Pasal, Khulfi
-                  Pasal Side, Chowmein Pasal
-                </p>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between", // Align icons to right side
-                  alignItems: "center",
-                  marginTop: "20px",
-                }}
-              >
-                <div>
-                  <FontAwesomeIcon
-                    icon={faThumbsUp}
-                    style={{ marginRight: "10px" }}
-                  />
-                  <span>17 Likes</span>
-                </div>
-                <div>
-                  <FontAwesomeIcon
-                    icon={faComment}
-                    style={{ marginRight: "10px" }}
-                  />
-                  <span>15 Comments</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
+      <hr />
     </div>
   );
-};
+}
 
-export default Profile;
+export default EditProfile;

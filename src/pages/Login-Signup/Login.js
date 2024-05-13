@@ -35,7 +35,7 @@ const Login = () => {
       marginTop: "10px",
       backgroundColor: "white",
       paddingBottom: "10px",
-      marginTop: '3rem',
+      marginTop: "3rem",
     },
     header: {
       display: "flex",
@@ -125,8 +125,8 @@ const Login = () => {
   };
 
   const [credentials, setCredentials] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [credentialsRegister, setCredentialsRegister] = useState({
@@ -273,7 +273,6 @@ const Login = () => {
       console.error("Registration failed:", err);
       toast.error("Registration failed!!");
       // Display error message from server
-
     }
   };
 
@@ -312,11 +311,11 @@ const Login = () => {
     setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
   const handleForgotPassword = (e) => {
-    navigate('/reset-password')
-  }
+    navigate("/reset-password");
+  };
 
   return (
-    <div style={styles.container} >
+    <div style={styles.container}>
       <div style={styles.header}>
         <div style={styles.text}>{action}</div>
         <div style={styles.underline}></div>
@@ -467,7 +466,6 @@ const Login = () => {
               />
             </div>
           </>
-
         )}
       </div>
       {action === "Sign Up" ? (
@@ -475,7 +473,12 @@ const Login = () => {
       ) : (
         <div style={styles.forgotPassword}>
           Forgot Password?{" "}
-          <span style={styles.forgotPasswordSpan} onClick={handleForgotPassword}>Click here</span>
+          <span
+            style={styles.forgotPasswordSpan}
+            onClick={handleForgotPassword}
+          >
+            Click here
+          </span>
         </div>
       )}
       <div style={styles.submitContainer}>

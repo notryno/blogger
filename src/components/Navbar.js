@@ -32,7 +32,7 @@ const Navbar = () => {
       <div className="flex items-center text-3xl py-2">
         <Link to="/">
           <h1 className="text-white text-3xl font-semibold mr-4 uppercase">
-            BLoggit
+            Bloggit
           </h1>
         </Link>
         <div className="hidden md:flex space-x-4">
@@ -44,11 +44,12 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            to="/blog"
-            className={`text-gray-300 hover:text-white ${location.pathname === "/blog" ? "text-yellow-400 underline" : ""
-              }`}
+            to="/blogs"
+            className={`text-gray-300 hover:text-white ${
+              location.pathname === "/blogs" ? "text-yellow-400 underline" : ""
+            }`}
           >
-            Blog
+            Blogs
           </Link>
         </div>
       </div>
@@ -132,6 +133,40 @@ const Navbar = () => {
                   Login
                 </button>
               </div>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-gray-100 rounded-lg shadow-lg z-50">
+                  <ul className="py-1">
+                    <li>
+                      <Link
+                        to="/profile"
+                        className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/blogs"
+                        className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Profile Blogs
+                      </Link>
+                    </li>
+                    <li
+                      className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                      onClick={() => {
+                        handleLogout();
+                        setDropdownOpen(false);
+                      }}
+                    >
+                      Logout
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
 
             </Link>
           </>
