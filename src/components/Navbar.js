@@ -8,17 +8,20 @@ import {
   AiOutlineBell,
 } from "react-icons/ai";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { token, dispatch } = useContext(AuthContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT" });
+    navigate('/')
   };
 
   return (
@@ -35,9 +38,8 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-4">
           <Link
             to="/"
-            className={`text-gray-300 hover:text-white ${
-              location.pathname === "/" ? "text-yellow-400 underline" : ""
-            }`}
+            className={`text-gray-300 hover:text-white ${location.pathname === "/" ? "text-yellow-400 underline" : ""
+              }`}
           >
             Home
           </Link>
@@ -78,7 +80,7 @@ const Navbar = () => {
             </div>
           )}
         </div>
-        {user ? (
+        {token ? (
           <div className="relative">
             <div
               className="flex items-center text-gray-300 cursor-pointer px-2"
@@ -101,11 +103,11 @@ const Navbar = () => {
                   </li>
                   <li>
                     <Link
-                      to="/profileblogs"
+                      to="/add-blog"
                       className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
                       onClick={() => setDropdownOpen(false)}
                     >
-                      Profile Blogs
+                      Add Blog
                     </Link>
                   </li>
                   <li
@@ -123,13 +125,13 @@ const Navbar = () => {
           </div>
         ) : (
           <>
-            <div className="relative">
-              <div
-                className="flex items-center text-gray-300 cursor-pointer"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <span className="mr-2">hello</span>
-                <AiOutlineUser className="h-6 w-6" />
+
+            <Link to='/login'>
+              <div className="text-xl text-white p-">
+
+                <button className="bg-blue-700 rounded p-2 hover:bg-blue-600">
+                  Login
+                </button>
               </div>
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-gray-100 rounded-lg shadow-lg z-50">
@@ -165,6 +167,8 @@ const Navbar = () => {
                 </div>
               )}
             </div>
+
+            </Link>
           </>
         )}
       </div>
@@ -184,25 +188,23 @@ const Navbar = () => {
         <div className="md:hidden absolute top-16 right-0 bg-gray-900 w-full text-white text-center">
           <Link
             to="/"
-            className={`block py-4 border-b border-gray-700 ${
-              location.pathname === "/"
+            className={`block py-4 border-b border-gray-700 ${location.pathname === "/"
                 ? "text-yellow-400"
                 : "hover:text-gray-300"
-            }`}
+              }`}
           >
             Home
           </Link>
           <Link
             to="/blog"
-            className={`block py-4 border-b border-gray-700 ${
-              location.pathname === "/blog"
+            className={`block py-4 border-b border-gray-700 ${location.pathname === "/blog"
                 ? "text-yellow-400"
                 : "hover:text-gray-300"
-            }`}
+              }`}
           >
             Blog
           </Link>
-          {user && (
+          {token && (
             <>
               <Link
                 to="/profile"
@@ -227,7 +229,7 @@ const Navbar = () => {
               </button>
             </>
           )}
-          {!user && (
+          {!token && (
             <Link
               to="/login"
               className="block  py-4 border-b border-gray-700 hover:text-gray-300"

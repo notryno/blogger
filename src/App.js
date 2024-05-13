@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/homePage/Home";
 import Navbar from "./components/Navbar";
@@ -11,7 +11,22 @@ import UserBlogs from "./pages/BlogDetails/UserBlogs";
 import AddBlog from "./pages/Blog/AddBlog";
 import EditProfile from "./pages/Profile/EditProfile";
 import ResetPassword from "./pages/Login-Signup/ResetPassword";
+import { AuthContext } from "./context/AuthContext";
+import { Navigate } from "react-router-dom";
+
 function App() {
+
+  const ProtectedRoute = ({ children }) => {
+    const { token } = useContext(AuthContext);
+
+    if (!token) {
+      return <Navigate to="/" />;
+    }
+
+    return children;
+
+  };
+  
   return (
     <div className="overflow-hidden">
       <BrowserRouter>
