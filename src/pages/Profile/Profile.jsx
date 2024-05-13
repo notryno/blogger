@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function EditProfile() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -12,6 +13,10 @@ function EditProfile() {
   const [lastNameError, setLastNameError] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const navigate = useNavigate();
+  const token = localStorage.getItem("token")
+  console.log(token)
+  const decodedToken = jwtDecode(token);
+  console.log(decodedToken)
 
   const handleImageChange = (e) => {
     console.log("Image selected:", e.target.files[0]);
@@ -113,18 +118,136 @@ function EditProfile() {
   };
 
   return (
-    <div className="mt-40 p-6 bg-gray-200">
-      {/* <h1 className="text-center text-blue-500 text-2xl font-bold mb-4">
-        Edit Profile
-      </h1> */}
-      <hr />
-      <div className="flex justify-center">
-        <div
-          className="w-64 mr-4"
-          style={{ position: "relative", top: "50px", right: "100px" }}
-        >
-          <div className="text-center">
-            <label htmlFor="imageUpload" className="cursor-pointer">
+    <div style={{ height: "200vh" }}>
+      <div style={styles.header}>
+        <div style={styles.imgdiv}>
+          <img
+            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            alt="profile"
+          />
+        </div>
+      </div>
+      <div style={styles.Main}>
+        <div style={styles.details}>
+          <h1
+            style={{
+              position: "relative",
+              left: "150px",
+              top: "120px",
+              fontSize: "35px",
+            }}
+          >
+            Sujal
+          </h1>
+          <p
+            style={{
+              marginTop: "auto",
+              marginLeft: "77px",
+              marginBottom: "50px",
+            }}
+          >
+            HELLO This the My Description Section. I AM A PROFESSIONAL.
+          </p>
+          {
+
+            localStorage.getItem("token") ?
+            <button
+              style={{
+                backgroundColor: "#612ce2",
+                color: "white",
+                border: "none",
+                padding: "10px 20px",
+                borderRadius: "5px",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                cursor: "pointer",
+                marginLeft: "auto",
+                marginRight: "-325px",
+                marginTop: "50px",
+                marginBottom: "auto",
+                transition: "background-color 0.3s ease",
+              }}
+              onClick={handleClick}
+            >
+              <FontAwesomeIcon icon={faPen} style={{ marginRight: "5px" }} />
+              Edit
+            </button>
+            :
+            <></>
+          }
+          <div
+            style={{
+              marginRight: "30px",
+              marginTop: "120px",
+              marginBottom: "auto",
+              backgroundColor: "#f2efff",
+              height: "80px",
+              width: "150px",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+              borderRadius: "5px",
+            }}
+          >
+            <h1
+              style={{ fontWeight: "bold", color: "#612ce2", fontSize: "20px" }}
+            >
+              222
+            </h1>
+            <h1 style={{ color: "#211249" }}>Total Blogs</h1>
+          </div>
+          <div
+            style={{
+              marginRight: "150px",
+              marginTop: "120px",
+              marginBottom: "auto",
+              backgroundColor: "#f0f7ff",
+              height: "80px",
+              width: "150px",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+              borderRadius: "5px",
+            }}
+          >
+            <h1
+              style={{ fontWeight: "bold", color: "#4a87dd", fontSize: "20px" }}
+            >
+              212
+            </h1>
+            <h1 style={{ color: "#1d2c5e" }}>Reactions</h1>
+          </div>
+        </div>
+        <hr
+          style={{ width: "82%", margin: "auto", borderTop: "1px solid #ccc" }}
+        />
+        <div style={{ display: "flex", height: "100%" }}>
+          <div
+            style={{
+              marginTop: "10px",
+              marginLeft: "58px",
+            }}
+          >
+            <h1
+              style={{
+                fontSize: "30px",
+                alignContent: "center",
+                marginLeft: "90px",
+                paddingBottom: "25px",
+              }}
+            >
+              Blogs
+            </h1>
+            <div
+              style={{
+                height: "500px",
+                width: "130vh",
+                marginLeft: "90px",
+                justifyContent: "left",
+                alignItems: "left",
+              }}
+            >
               <img
                 src={
                   selectedImage
@@ -156,17 +279,13 @@ function EditProfile() {
               <label className="mr-4 font-bold text-gray-800">
                 First name:
               </label>
-
-              <input
-                type="text"
-                value={firstName}
-                onChange={handleFirstNameChange}
-                className="flex items-end mt-2 border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
-                style={{ width: "300px" }}
-              />
-              {firstNameError && (
-                <div className="text-red-500">{firstNameError}</div>
-              )}
+                    <div className="p-4 rounded-full bg-gray-600 " style={{ backgroundColor: 'lightgray' }}>#MobilePhotography</div>
+                    <div className="p-4 rounded-full bg-gray-600" style={{ backgroundColor: 'lightgray' }}>#Photography</div>
+                    <div className="p-4 px-6 rounded-full bg-gray-600" style={{ backgroundColor: 'lightgray' }}>#Mountain</div>
+                    <div className="p-4 px-6 rounded-full bg-gray-600" style={{ backgroundColor: 'lightgray' }}>#Beautiful</div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="mb-4">
               <label className="mr-4 font-bold text-gray-800">Last name:</label>

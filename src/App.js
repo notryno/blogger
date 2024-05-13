@@ -13,11 +13,13 @@ import EditProfile from "./pages/Profile/EditProfile";
 import ResetPassword from "./pages/Login-Signup/ResetPassword";
 import { AuthContext } from "./context/AuthContext";
 import { Navigate } from "react-router-dom";
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 function App() {
 
   const ProtectedRoute = ({ children }) => {
     const { token } = useContext(AuthContext);
+    
 
     if (!token) {
       return <Navigate to="/" />;
