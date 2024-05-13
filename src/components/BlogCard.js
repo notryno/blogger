@@ -13,6 +13,7 @@ function BlogCard({ blogs, handleVote }) {
     reactionCount,
     reactions,
     handleVote,
+    id,
   }) {
     const isUserReaction = (reaction) =>
       reaction?.userId === "b25acafe-aadb-4ce1-9a97-40f41e944f3e";
@@ -20,8 +21,9 @@ function BlogCard({ blogs, handleVote }) {
 
     return (
       <div
-        className="card bg-gradient-to-br from-white to-ECE9E6 shadow-lg rounded-lg overflow-hidden"
+        className="card bg-gradient-to-br from-white to-ECE9E6 shadow-lg rounded-lg overflow-hidden cursor-pointer"
         style={{ width: "300px" }}
+        onClick={() => (window.location.href = `/userblogs/${id}`)}
       >
         <div className="card__header">
           <img src={imageUrl} alt="card__image" className="card__image" />
@@ -116,6 +118,7 @@ function BlogCard({ blogs, handleVote }) {
             reactionCount={blog.reactionCount}
             reactions={blog.reactions}
             handleVote={(voteType) => handleVote(voteType, blog.id)}
+            id={blog.id}
           />
         ))
       ) : (

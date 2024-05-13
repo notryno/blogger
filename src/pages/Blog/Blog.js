@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import blogheader from "../../assets/homeimage.jpg";
-import ReactPaginate from "react-paginate";
 import BlogCard from "../../components/BlogCard";
 import axios from "axios";
+import ReactPaginate from "react-paginate";
 
 const Blog = () => {
-  const [activePage, setActivePage] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [sortingOption, setSortingOption] = useState("");
+  const [totalBlogs, setTotalBlogs] = useState(0);
+
   const [blogs, setBlogs] = useState([]);
 
-  const itemsPerPage = 8;
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU3VqdSIsImp0aSI6IjExMWQxMWJmLTAzNTctNDU2Mi1iM2YwLTYxMTVhZGYyYjg5NSIsInVzZXJJZCI6ImIyNWFjYWZlLWFhZGItNGNlMS05YTk3LTQwZjQxZTk0NGYzZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MTU2OTQ1NTksImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwNzkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDc5In0.M80Sta3pFWDtXNqFTW9q9JM9wbijPEmcg4LfQ36Cpyg";
 
@@ -75,29 +77,57 @@ const Blog = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("http://localhost:5079/api/blogs");
+        const response = await axios.get(
+          "http://localhost:5079/api/blogs/paginate",
+          {
+            params: {
+              pageNumber: pageNumber + 1,
+              pageSize: itemsPerPage,
+              sortingOption: sortingOption,
+            },
+          }
+        );
         setBlogs(response.data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchBlogs();
+  }, [pageNumber, itemsPerPage, sortingOption]);
+
+  useEffect(() => {
+    const fetchTotalBlogs = async () => {
+      try {
+        const response = await axios.get("http://localhost:5079/api/blogs");
+        setTotalBlogs(response.data.length);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchTotalBlogs();
   }, []);
 
   const handlePageChange = (selectedPage) => {
-    setActivePage(selectedPage.selected);
+    setPageNumber(selectedPage.selected);
   };
 
   const handleSortingChange = (option) => {
     setSortingOption(option);
   };
 
-  const startIndex = activePage * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  // const currentBloggers = bloggers.slice(startIndex, endIndex);
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setPageNumber(0); // Reset page number when changing items per page
+  };
+
+  const maxItemsPerPage = Math.ceil(totalBlogs / 5) * 5; // Round up to nearest multiple of 5
+  const itemsPerPageOptions = [];
+  for (let i = 5; i <= maxItemsPerPage; i += 5) {
+    itemsPerPageOptions.push(i);
+  }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen pb-16">
       {/* Header */}
       <div
         className="h-96 bg-cover bg-center flex items-center justify-center text-white relative"
@@ -169,31 +199,50 @@ const Blog = () => {
       </div>
 
       {/* Pagination */}
-      {/* <div className="flex justify-center mt-8">
+      <div className="flex justify-center mt-8">
         <ReactPaginate
-          pageCount={Math.ceil(bloggers.length / itemsPerPage)}
-          pageRangeDisplayed={2}
-          marginPagesDisplayed={0}
-          previousLabel="Previous"
-          nextLabel="Next"
+          pageCount={Math.ceil(totalBlogs / itemsPerPage)} // Calculate total pages based on total blogs and items per page
+          pageRangeDisplayed={5} // Number of page links to display
+          marginPagesDisplayed={2} // Number of margin pages to display
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
           breakLabel="..."
           breakClassName="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-md"
           previousClassName={`relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-md mr-2 ${
-            activePage === 0
+            pageNumber === 0
               ? "opacity-50 cursor-not-allowed"
               : "hover:bg-blue-500 hover:text-white transition duration-300"
           }`}
           nextClassName={`relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-md ml-2 ${
-            activePage === Math.ceil(bloggers.length / itemsPerPage) - 1
+            pageNumber === Math.ceil(totalBlogs / itemsPerPage) - 1
               ? "opacity-50 cursor-not-allowed"
               : "hover:bg-blue-500 hover:text-white hover:bg-[#3b82f6] transition duration-300"
           }`}
           pageClassName="relative inline-flex items-center  border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
           activeLinkClassName="bg-blue-500 text-white px-4 py-2 mx-1 rounded-md hover:bg-blue-600 transition duration-300"
           pageLinkClassName="px-3 py-2"
-          onPageChange={handlePageChange}
         />
-      </div> */}
+      </div>
+
+      {/* Items Per Page Dropdown */}
+      <div className="flex justify-center mt-4">
+        <label htmlFor="itemsPerPage" className="mr-2">
+          Items per page:
+        </label>
+        <select
+          id="itemsPerPage"
+          value={itemsPerPage}
+          onChange={handleItemsPerPageChange}
+          className="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:border-blue-500"
+        >
+          {itemsPerPageOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 };
