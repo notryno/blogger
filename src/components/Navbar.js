@@ -42,12 +42,12 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            to="/blog"
+            to="/blogs"
             className={`text-gray-300 hover:text-white ${
-              location.pathname === "/blog" ? "text-yellow-400 underline" : ""
+              location.pathname === "/blogs" ? "text-yellow-400 underline" : ""
             }`}
           >
-            Blog
+            Blogs
           </Link>
         </div>
       </div>
@@ -145,7 +145,7 @@ const Navbar = () => {
                     </li>
                     <li>
                       <Link
-                        to="/userblogs"
+                        to="/blogs"
                         className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
                         onClick={() => setDropdownOpen(false)}
                       >

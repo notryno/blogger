@@ -18,12 +18,12 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/blog" element={<Blog />} />
+          <Route path="/blogs" element={<Blog />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profileblogs" element={<ProfileBlogs />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/userblogs" element={<UserBlogs />} />
+          <Route path="/blog" element={<UserBlogs />} />
           <Route path="/add-blog" element={<AddBlog />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/reset-password" element={<ResetPassword />} />
