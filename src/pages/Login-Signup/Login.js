@@ -168,10 +168,10 @@ const Login = () => {
     try {
       console.log(credentials);
 
-      const res = await axios.post(
-        "http://localhost:5079/api/auth/login",
-        credentials
-      );
+      const formData = new FormData();
+      formData.append("email", credentials.email);
+      formData.append("password", credentials.password);
+      const res = await axios.post("http://localhost:5079/api/login", formData);
 
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.token });
       console.log(res.data.token);
@@ -249,7 +249,7 @@ const Login = () => {
     try {
       //registering
       const res = await axios.post(
-        "http://localhost:5079/api/auth/register",
+        "http://localhost:5079/api/register",
         credentialsRegister
       );
       console.log(res);
