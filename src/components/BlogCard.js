@@ -19,11 +19,15 @@ function BlogCard({ blogs, handleVote }) {
       reaction?.userId === "b25acafe-aadb-4ce1-9a97-40f41e944f3e";
     const userReaction = reactions.find(isUserReaction);
 
+    function navigateToBlog(id) {
+      window.location.href = `/blog?id=${id}`;
+    }
+
     return (
       <div
         className="card bg-gradient-to-br from-white to-ECE9E6 shadow-lg rounded-lg overflow-hidden cursor-pointer"
         style={{ width: "300px" }}
-        onClick={() => (window.location.href = `/userblogs/${id}`)}
+        onClick={() => navigateToBlog(id)}
       >
         <div className="card__header">
           <img src={imageUrl} alt="card__image" className="card__image" />
