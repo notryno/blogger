@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPen,
@@ -7,13 +7,48 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { useParams } from 'react-router-dom';
+import axios from "axios";
 
-const Profile = () => {
+const UserProfile = () => {
   const navigate = useNavigate();
+
+  // const [user,setUser] = useState({})
   const token = localStorage.getItem("token")
   console.log(token)
+
   const decodedToken = jwtDecode(token);
   console.log(decodedToken)
+
+  const { id } = useParams();
+
+  //user logged in main one 
+  // const user = {"id" : "a1ab8a5a-f3df-4ee6-a22f-3b6015459122"} 
+
+  //user logged in random jastley only profile herna milxa no edit
+  const user = { "id": "a1ab8a5a-f3df-4ee6-a22f-sdfsdf459122" }
+
+
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5079/api/user/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token.replace(/['"]+/g, '')}` // Remove quotes from the token
+          }
+        });
+        console.log(response.data);
+        // setUser() // set the recieved suser
+
+        // Log the fetched user data to the console
+      } catch (error) {
+        console.error('Error fetching user:', error); // Log any errors that occur during the fetch
+      }
+    };
+
+    fetchUser(); // Call the fetchUser function when the component mounts or when the 'id' dependency changes
+  }, [id]); // Re-run the effect whenever the 'id' dependency changes
 
 
   const handleClick = () => {
@@ -81,35 +116,36 @@ const Profile = () => {
               marginTop: "auto",
               marginLeft: "77px",
               marginBottom: "50px",
+              paddingRight: "40rem"
             }}
           >
             HELLO This the My Description Section. I AM A PROFESSIONAL.
           </p>
           {
 
-            localStorage.getItem("token") ?
-            <button
-              style={{
-                backgroundColor: "#612ce2",
-                color: "white",
-                border: "none",
-                padding: "10px 20px",
-                borderRadius: "5px",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                cursor: "pointer",
-                marginLeft: "auto",
-                marginRight: "-325px",
-                marginTop: "50px",
-                marginBottom: "auto",
-                transition: "background-color 0.3s ease",
-              }}
-              onClick={handleClick}
-            >
-              <FontAwesomeIcon icon={faPen} style={{ marginRight: "5px" }} />
-              Edit
-            </button>
-            :
-            <></>
+            decodedToken.userId === user.id ?
+              <button
+                style={{
+                  backgroundColor: "#612ce2",
+                  color: "white",
+                  border: "none",
+                  padding: "10px 20px",
+                  borderRadius: "5px",
+                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                  cursor: "pointer",
+                  marginLeft: "auto",
+                  marginRight: "-325px",
+                  marginTop: "50px",
+                  marginBottom: "auto",
+                  transition: "background-color 0.3s ease",
+                }}
+                onClick={handleClick}
+              >
+                <FontAwesomeIcon icon={faPen} style={{ marginRight: "5px" }} />
+                Edit
+              </button>
+              :
+              <></>
           }
           <div
             style={{
@@ -381,4 +417,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UserProfile;

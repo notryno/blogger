@@ -13,11 +13,13 @@ import EditProfile from "./pages/Profile/EditProfile";
 import ResetPassword from "./pages/Login-Signup/ResetPassword";
 import { AuthContext } from "./context/AuthContext";
 import { Navigate } from "react-router-dom";
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 function App() {
 
   const ProtectedRoute = ({ children }) => {
     const { token } = useContext(AuthContext);
+    
 
     if (!token) {
       return <Navigate to="/" />;
@@ -37,7 +39,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/userblogs" element={<UserBlogs />} />
 
           <Route path="/add-blog" element={<ProtectedRoute><AddBlog /></ProtectedRoute>} />
@@ -46,6 +48,7 @@ function App() {
 
 
           <Route path="/reset-password" element={<ProtectedRoute><ResetPassword /></ProtectedRoute>} />
+          <Route path="/user/:id" element={<UserProfile />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
