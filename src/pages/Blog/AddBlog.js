@@ -24,7 +24,7 @@ const AddBlog = () => {
     console.log("Content:", content);
     console.log("Images:", images);
     var token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU3VqdSIsImp0aSI6Ijk4OTY1MDIyLTJhMjQtNGM0ZS05M2UwLWNjYWQ0MzQwNjk1NCIsInVzZXJJZCI6ImIyNWFjYWZlLWFhZGItNGNlMS05YTk3LTQwZjQxZTk0NGYzZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MTU2MjA4NDMsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwNzkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDc5In0.PxdrlYahTxtXVfSr-MS8lzKlcveaAV_JcFhRNZRsuuw";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU3VqdSIsImp0aSI6IjExMWQxMWJmLTAzNTctNDU2Mi1iM2YwLTYxMTVhZGYyYjg5NSIsInVzZXJJZCI6ImIyNWFjYWZlLWFhZGItNGNlMS05YTk3LTQwZjQxZTk0NGYzZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MTU2OTQ1NTksImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwNzkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDc5In0.M80Sta3pFWDtXNqFTW9q9JM9wbijPEmcg4LfQ36Cpyg";
 
     const tagsArray = tags.split(",").map((tag) => tag.trim());
 

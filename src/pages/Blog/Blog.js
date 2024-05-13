@@ -10,12 +10,73 @@ const Blog = () => {
   const [blogs, setBlogs] = useState([]);
 
   const itemsPerPage = 8;
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU3VqdSIsImp0aSI6IjExMWQxMWJmLTAzNTctNDU2Mi1iM2YwLTYxMTVhZGYyYjg5NSIsInVzZXJJZCI6ImIyNWFjYWZlLWFhZGItNGNlMS05YTk3LTQwZjQxZTk0NGYzZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MTU2OTQ1NTksImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwNzkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDc5In0.M80Sta3pFWDtXNqFTW9q9JM9wbijPEmcg4LfQ36Cpyg";
+
+  const handleVote = async (voteType, blogId) => {
+    try {
+      // Find the blog based on ID
+      const blog = blogs.find((blog) => blog.id === blogId);
+      if (!blog) {
+        console.log("Blog not found");
+        return;
+      }
+
+      // Find the user's existing reaction, if any
+      const existingReaction = blog.reactions.find(
+        (reaction) => reaction.userId === "b25acafe-aadb-4ce1-9a97-40f41e944f3e"
+      );
+
+      // If there is an existing reaction
+      if (existingReaction) {
+        // If the existing reaction is of the same type as the voteType, delete the reaction
+        console.log("Existing Reaction", existingReaction);
+        console.log("Vote Type", voteType);
+        if (existingReaction.type === voteType) {
+          console.log(
+            `Deleting: http://localhost:5079/api/blogs/${blogId}/reactions/${existingReaction.id}`
+          );
+          await axios.delete(
+            `http://localhost:5079/api/blogs/${blogId}/reactions/${existingReaction.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        } else {
+          // Otherwise, update the existing reaction type
+          await axios.patch(
+            `http://localhost:5079/api/blogs/${blogId}/reactions/${existingReaction.id}`,
+            { type: voteType }
+          );
+        }
+      } else {
+        // If there is no existing reaction, add a new reaction
+        await axios.post(
+          `http://localhost:5079/api/blogs/${blogId}/reactions`,
+          { type: voteType, userId: "b25acafe-aadb-4ce1-9a97-40f41e944f3e" },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Refetch blogs data after reaction update
+      const response = await axios.get("http://localhost:5079/api/blogs");
+      setBlogs(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("http://localhost:5079/api/blogs");
-        setBlogs(response);
+        setBlogs(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -104,7 +165,7 @@ const Blog = () => {
           gap: "2rem",
         }}
       >
-        <BlogCard cards={blogs} />
+        <BlogCard blogs={blogs} handleVote={handleVote} />
       </div>
 
       {/* Pagination */}
