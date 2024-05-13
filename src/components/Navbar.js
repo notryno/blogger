@@ -1,7 +1,13 @@
-import React, { useContext, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { AiOutlineUser, AiOutlineLogout, AiOutlineMenu, AiOutlineClose, AiOutlineBell } from 'react-icons/ai';
-import { AuthContext } from '../context/AuthContext';
+import React, { useContext, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  AiOutlineUser,
+  AiOutlineLogout,
+  AiOutlineMenu,
+  AiOutlineClose,
+  AiOutlineBell,
+} from "react-icons/ai";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -16,16 +22,21 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center py-4 px-6 bg-gray-900 fixed top-0 w-full z-50">
+    <nav
+      className="flex justify-between items-center py-4 px-6 bg-gray-900  top-0 w-full z-50"
+      style={{}}
+    >
       <div className="flex items-center text-3xl py-2">
-        <Link to='/'>
-        <h1 className="text-white text-3xl font-semibold mr-4 uppercase">BLoggit</h1>
+        <Link to="/">
+          <h1 className="text-white text-3xl font-semibold mr-4 uppercase">
+            BLoggit
+          </h1>
         </Link>
         <div className="hidden md:flex space-x-4">
           <Link
             to="/"
             className={`text-gray-300 hover:text-white ${
-              location.pathname === '/' ? 'text-yellow-400 underline' : ''
+              location.pathname === "/" ? "text-yellow-400 underline" : ""
             }`}
           >
             Home
@@ -33,7 +44,7 @@ const Navbar = () => {
           <Link
             to="/blog"
             className={`text-gray-300 hover:text-white ${
-              location.pathname === '/blog' ? 'text-yellow-400 underline' : ''
+              location.pathname === "/blog" ? "text-yellow-400 underline" : ""
             }`}
           >
             Blog
@@ -162,7 +173,11 @@ const Navbar = () => {
           className="text-white focus:outline-none"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          {mobileMenuOpen ? <AiOutlineClose className="h-6 w-6" /> : <AiOutlineMenu className="h-6 w-6" />}
+          {mobileMenuOpen ? (
+            <AiOutlineClose className="h-6 w-6" />
+          ) : (
+            <AiOutlineMenu className="h-6 w-6" />
+          )}
         </button>
       </div>
       {mobileMenuOpen && (
@@ -170,7 +185,9 @@ const Navbar = () => {
           <Link
             to="/"
             className={`block py-4 border-b border-gray-700 ${
-              location.pathname === '/' ? 'text-yellow-400' : 'hover:text-gray-300'
+              location.pathname === "/"
+                ? "text-yellow-400"
+                : "hover:text-gray-300"
             }`}
           >
             Home
@@ -178,17 +195,25 @@ const Navbar = () => {
           <Link
             to="/blog"
             className={`block py-4 border-b border-gray-700 ${
-              location.pathname === '/blog' ? 'text-yellow-400' : 'hover:text-gray-300'
+              location.pathname === "/blog"
+                ? "text-yellow-400"
+                : "hover:text-gray-300"
             }`}
           >
             Blog
           </Link>
           {user && (
             <>
-              <Link to="/profile" className="block py-4 border-b border-gray-700 hover:text-gray-300">
+              <Link
+                to="/profile"
+                className="block py-4 border-b border-gray-700 hover:text-gray-300"
+              >
                 Profile
               </Link>
-              <Link to="/profileblogs" className="block py-4 border-b border-gray-700 hover:text-gray-300">
+              <Link
+                to="/profileblogs"
+                className="block py-4 border-b border-gray-700 hover:text-gray-300"
+              >
                 Profile Blogs
               </Link>
               <button
@@ -203,7 +228,12 @@ const Navbar = () => {
             </>
           )}
           {!user && (
-            <Link to="/login" className="block  py-4 border-b border-gray-700 hover:text-gray-300">Login</Link>
+            <Link
+              to="/login"
+              className="block  py-4 border-b border-gray-700 hover:text-gray-300"
+            >
+              Login
+            </Link>
           )}
         </div>
       )}
