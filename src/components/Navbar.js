@@ -32,7 +32,7 @@ const Navbar = () => {
       <div className="flex items-center text-3xl py-2">
         <Link to="/">
           <h1 className="text-white text-3xl font-semibold mr-4 uppercase">
-            BLoggit
+            Bloggit
           </h1>
         </Link>
         <div className="hidden md:flex space-x-4">
