@@ -376,6 +376,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPen,
+  faComment,
+  faThumbsUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 const EditProfile = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -491,6 +497,44 @@ const EditProfile = () => {
   const handleCancel = () => {
     navigate("/profile");
   };
+  const styles = {
+    header: {
+      background: "#cc95c0",
+      background:
+        "-webkit-linear-gradient(to right, #cc95c0, #dbd4b4, #7aa1d2)",
+      background: "linear-gradient(to right, #cc95c0, #dbd4b4, #7aa1d2)",
+      width: "100%",
+      height: "250px",
+    },
+    Main: {
+      backgroundColor: "white",
+      width: "100%",
+      height: "100%",
+    },
+    imgdiv: {
+      backgroundColor: "green",
+      width: "200px",
+      height: "200px",
+      top: "150px",
+      position: "relative",
+      left: "130px",
+      borderRadius: "50%",
+      overflow: "hidden",
+      border: "6px white solid",
+
+      boxShadow:
+        "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
+    },
+    details: {
+      display: "flex",
+      backgroundColor: "white",
+      width: "100%",
+      height: "250px",
+    },
+  };
+  const handleClick = () => {
+    navigate('/edit-profile')
+  }
 
   return (
     <div style={{ height: "200vh" }}>

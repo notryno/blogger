@@ -61,7 +61,7 @@ const Blog = () => {
         // If there is no existing reaction, add a new reaction
         await axios.post(
           `http://localhost:5079/api/blogs/${blogId}/reactions`,
-          { type: voteType, userId: "b25acafe-aadb-4ce1-9a97-40f41e944f3e" },
+          { type: voteType, userId: decodedToken.userId },
           {
             headers: {
               Authorization: `Bearer ${token}`,

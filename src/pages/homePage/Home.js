@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col pt-[6rem]">
       <div className="bg-[#1f252a] flex justify-center items-center p-4">
         <div className="text-white text-center">
           <div className="font-bold text-7xl py-3">Welcome Lifestylers.</div>
