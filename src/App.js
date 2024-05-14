@@ -10,10 +10,10 @@ import UserBlogs from "./pages/BlogDetails/UserBlogs";
 import AddBlog from "./pages/Blog/AddBlog";
 import EditProfile from "./pages/Profile/EditProfile";
 import ResetPassword from "./pages/Login-Signup/ResetPassword";
+import Chat from "./components/Chat";
 import { AuthContext } from "./context/AuthContext";
 import { Navigate } from "react-router-dom";
 import UserProfile from "./pages/UserProfile/UserProfile";
-
 function App() {
 
   const ProtectedRoute = ({ children }) => {
@@ -44,6 +44,7 @@ function App() {
           <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
           <Route path='/user/:id' element={<UserProfile/>}/>
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/chat" element={<Chat />} />
         </Routes>
       </BrowserRouter>
     </div>
