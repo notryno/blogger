@@ -11,6 +11,7 @@ import UserBlogs from "./pages/BlogDetails/UserBlogs";
 import AddBlog from "./pages/Blog/AddBlog";
 import EditProfile from "./pages/Profile/EditProfile";
 import ResetPassword from "./pages/Login-Signup/ResetPassword";
+import Chat from "./components/Chat";
 function App() {
   return (
     <div className="overflow-hidden">
@@ -27,6 +28,7 @@ function App() {
           <Route path="/add-blog" element={<AddBlog />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/chat" element={<Chat />} />
         </Routes>
       </BrowserRouter>
     </div>

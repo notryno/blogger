@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import homeimageprofile from "../../assets/homeimage2.jpg";
-import { FaArrowUp, FaArrowDown, FaComment } from "react-icons/fa";
+import {
+  FaArrowUp,
+  FaArrowDown,
+  FaComment,
+  FaPencilAlt,
+  FaSave,
+  FaTrash,
+} from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import axios from "axios";
 
@@ -29,6 +36,8 @@ const UserBlogs = () => {
   const [showReplyInputs, setShowReplyInputs] = useState({});
   const [commentInput, setCommentInput] = useState("");
   const [commentReactions, setCommentReactions] = useState([]);
+  const [editMode, setEditMode] = useState(false);
+  const [editedComment, setEditedComment] = useState("");
 
   const [id, setId] = useState(null);
   const [blogId, setBlogId] = useState(null);
@@ -62,6 +71,24 @@ const UserBlogs = () => {
       fetchUserData(response.data.author);
       setComments(response.data.comments);
       fetchCommentUserData(response.data.comments);
+    } catch (error) {
+      console.log(error);
+      // Handle error, show a message, or redirect to an error page
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5079/api/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Handle success, update UI or show a success message
+      fetchBlogData(id);
     } catch (error) {
       console.log(error);
       // Handle error, show a message, or redirect to an error page
@@ -138,7 +165,6 @@ const UserBlogs = () => {
   const handleVote = async (voteType, blogId) => {
     try {
       // Find the blog based on ID
-      console.log("Blog ID", blogId);
 
       // Find the user's existing reaction, if any
       const existingReaction = blogData.reactions.find(
@@ -148,12 +174,7 @@ const UserBlogs = () => {
       // If there is an existing reaction
       if (existingReaction) {
         // If the existing reaction is of the same type as the voteType, delete the reaction
-        console.log("Existing Reaction", existingReaction);
-        console.log("Vote Type", voteType);
         if (existingReaction.type === voteType) {
-          console.log(
-            `Deleting: http://localhost:5079/api/blogs/${blogId}/reactions/${existingReaction.id}`
-          );
           await axios.delete(
             `http://localhost:5079/api/blogs/${blogId}/reactions/${existingReaction.id}`,
             {
@@ -193,7 +214,6 @@ const UserBlogs = () => {
   const handleCommentVote = async (voteType, commentId) => {
     try {
       // Find the blog based on ID
-      console.log("cooment ID", commentReactions);
 
       // Find the user's existing reaction, if any
       const existingReaction = commentReactions.find(
@@ -205,12 +225,8 @@ const UserBlogs = () => {
       // If there is an existing reaction
       if (existingReaction) {
         // If the existing reaction is of the same type as the voteType, delete the reaction
-        console.log("Existing Reaction", existingReaction);
-        console.log("Vote Type", voteType);
+
         if (existingReaction.type === voteType) {
-          console.log(
-            `Deleting: http://localhost:5079/api/blogs/${id}/reactions/${existingReaction.id}`
-          );
           await axios.delete(
             `http://localhost:5079/api/blogs/${commentId}/reactions/${existingReaction.id}`,
             {
@@ -292,50 +308,120 @@ const UserBlogs = () => {
     }));
   };
 
+  const handleUpdateComment = async (comment) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5079/api/comments/${comment.id}`,
+        { content: editedComment },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Handle success, update UI or show a success message
+      setEditMode(false);
+      setEditedComment("");
+      fetchBlogData(id);
+    } catch (error) {
+      console.log(error);
+      // Handle error, show a message, or redirect to an error page
+    }
+  };
+
   const renderComments = (commentsList) =>
     commentsList.map((comment) => (
       <div key={comment.id} className="mb-4">
         <div className="border rounded-lg p-3">
-          <div>{comment.content}</div>
+          {comment.userData && comment.userId === userId ? ( // Check if the current user is the author
+            editMode ? (
+              <div className="flex items-center justify-between mb-2">
+                <textarea
+                  value={editedComment}
+                  onChange={(e) => setEditedComment(e.target.value)}
+                  placeholder="Edit your comment..."
+                  className="border rounded-lg p-2 w-full"
+                />
+                <div className="flex items-center">
+                  <button
+                    className="text-red-500 mr-2 justify-center items-center flex"
+                    onClick={() => setEditMode(false)}
+                  >
+                    <FaTimes /> Cancel
+                  </button>
+                  <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600"
+                    onClick={() => handleUpdateComment(comment)}
+                  >
+                    <FaSave /> Update
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="">{comment.content}</div>
+            )
+          ) : (
+            // Render only the comment content if the current user is not the author
+            <div className="">{comment.content}</div>
+          )}
+
           <div className="flex items-center mt-2">
-            <button
-              onClick={() => toggleReplyInput(comment.id)}
-              className="text-blue-500 hover:underline mr-2"
-            >
-              Reply
-            </button>
-            <div className="flex items-center space-x-2">
-              <FaArrowUp
-                onClick={() => handleCommentVote("Upvote", comment.id)}
-                className={`cursor-pointer ${
-                  comment.userData &&
-                  commentReactions.some(
-                    (reaction) =>
-                      reaction.userId === userId &&
-                      reaction.commentId === comment.id &&
-                      reaction.type === "Upvote"
-                  )
-                    ? "text-orange-500"
-                    : ""
-                }`}
-              />
-              <span>{comment.upvotes}</span>
-              <FaArrowDown
-                onClick={() => handleCommentVote("Downvote", comment.id)}
-                className={`cursor-pointer ${
-                  comment.userData &&
-                  commentReactions.some(
-                    (reaction) =>
-                      reaction.userId === userId &&
-                      reaction.commentId === comment.id &&
-                      reaction.type === "Downvote"
-                  )
-                    ? "text-orange-500"
-                    : ""
-                }`}
-              />
-              <span>{comment.downvotes}</span>
-            </div>
+            {comment.userData &&
+              comment.userData.id === userId && ( // Check if the current user is the author
+                <React.Fragment>
+                  <button
+                    onClick={() => toggleReplyInput(comment.id)}
+                    className="text-blue-500 hover:underline mr-2"
+                  >
+                    Reply
+                  </button>
+                  <div className="flex items-center space-x-2">
+                    <FaArrowUp
+                      onClick={() => handleCommentVote("Upvote", comment.id)}
+                      className={`cursor-pointer ${
+                        comment.userData &&
+                        commentReactions.some(
+                          (reaction) =>
+                            reaction.userId === userId &&
+                            reaction.commentId === comment.id &&
+                            reaction.type === "Upvote"
+                        )
+                          ? "text-orange-500"
+                          : ""
+                      }`}
+                    />
+                    <span>{comment.upvotes}</span>
+                    <FaArrowDown
+                      onClick={() => handleCommentVote("Downvote", comment.id)}
+                      className={`cursor-pointer ${
+                        comment.userData &&
+                        commentReactions.some(
+                          (reaction) =>
+                            reaction.userId === userId &&
+                            reaction.commentId === comment.id &&
+                            reaction.type === "Downvote"
+                        )
+                          ? "text-orange-500"
+                          : ""
+                      }`}
+                    />
+                    <span>{comment.downvotes}</span>
+                  </div>
+                  <button onClick={() => setEditMode(true)}>
+                    <FaPencilAlt />
+                  </button>
+                  <button
+                    onClick={() =>
+                      window.confirm(
+                        "Are you sure you want to delete this comment?"
+                      ) && handleDeleteComment(comment.id)
+                    }
+                    className="text-red-500 ml-2"
+                  >
+                    <FaTrash />
+                  </button>
+                </React.Fragment>
+              )}
           </div>
           {showReplyInputs[comment.id] && (
             <div className="mt-2">
@@ -529,7 +615,7 @@ const UserBlogs = () => {
             </div>
             <div className="flex  items-center">
               <FaComment onClick={handleCommentButtonClick} />
-              <span className="px-2">25k</span>
+              <span className="px-2">5</span>
             </div>
           </div>
         </div>
