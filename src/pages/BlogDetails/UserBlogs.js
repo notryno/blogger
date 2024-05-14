@@ -13,6 +13,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 
+
 const UserBlogs = () => {
   const [blogData, setBlogData] = useState(null);
   const [comments, setComments] = useState([]);
@@ -49,7 +50,6 @@ const UserBlogs = () => {
 
   const [id, setId] = useState(null);
   const [blogId, setBlogId] = useState(null);
-
   const userId = decodedToken.userId;
 
   useEffect(() => {
@@ -165,7 +165,7 @@ const UserBlogs = () => {
   };
 
   const isUserReaction = (reaction) =>
-    reaction?.userId === "b25acafe-aadb-4ce1-9a97-40f41e944f3e";
+    reaction?.userId === decodedToken.userId;
   const userReaction = blogData?.reactions.find(isUserReaction);
 
   const handleVote = async (voteType, blogId) => {
@@ -174,7 +174,7 @@ const UserBlogs = () => {
 
       // Find the user's existing reaction, if any
       const existingReaction = blogData.reactions.find(
-        (reaction) => reaction.userId === "b25acafe-aadb-4ce1-9a97-40f41e944f3e"
+        (reaction) => reaction.userId === decodedToken.userId
       );
 
       // If there is an existing reaction
@@ -200,7 +200,7 @@ const UserBlogs = () => {
         // If there is no existing reaction, add a new reaction
         await axios.post(
           `http://localhost:5079/api/blogs/${blogId}/reactions`,
-          { type: voteType, userId: "b25acafe-aadb-4ce1-9a97-40f41e944f3e" },
+          { type: voteType, userId: decodedToken.userId },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -224,7 +224,7 @@ const UserBlogs = () => {
       // Find the user's existing reaction, if any
       const existingReaction = commentReactions.find(
         (reaction) =>
-          reaction.userId === "b25acafe-aadb-4ce1-9a97-40f41e944f3e" &&
+          reaction.userId === decodedToken.userId &&
           reaction.commentId === commentId
       );
 
@@ -254,7 +254,7 @@ const UserBlogs = () => {
           `http://localhost:5079/api/blogs/${id}/reactions`,
           {
             type: voteType,
-            userId: "b25acafe-aadb-4ce1-9a97-40f41e944f3e",
+            userId: decodedToken.userId,
             commentId,
           },
           {
@@ -287,7 +287,7 @@ const UserBlogs = () => {
         {
           content: commentContent,
           blogId: id,
-          userId: "b25acafe-aadb-4ce1-9a97-40f41e944f3e",
+          userId: decodedToken.userId,
           replyId: parentId,
         },
         {

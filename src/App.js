@@ -55,7 +55,7 @@ function App() {
           /> */}
           <Route path="/user/:id" element={<UserProfile />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/chat" element={<Chat />} />
+          {/* <Route path="/chat" element={<Chat />} />  */}
         </Routes>
       </BrowserRouter>
     </div>
