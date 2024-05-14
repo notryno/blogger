@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import homeimageprofile from "../../assets/homeimage2.jpg";
 import {
   FaArrowUp,
@@ -10,6 +10,8 @@ import {
 } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 const UserBlogs = () => {
   const [blogData, setBlogData] = useState(null);
@@ -39,12 +41,16 @@ const UserBlogs = () => {
   const [editMode, setEditMode] = useState(false);
   const [editedComment, setEditedComment] = useState("");
 
+  const { token } = useContext(AuthContext);
+
+  const storedToken = localStorage.getItem("token");
+
+  const decodedToken = jwtDecode(storedToken);
+
   const [id, setId] = useState(null);
   const [blogId, setBlogId] = useState(null);
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU3VqdSIsImp0aSI6IjExMWQxMWJmLTAzNTctNDU2Mi1iM2YwLTYxMTVhZGYyYjg5NSIsInVzZXJJZCI6ImIyNWFjYWZlLWFhZGItNGNlMS05YTk3LTQwZjQxZTk0NGYzZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MTU2OTQ1NTksImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwNzkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDc5In0.M80Sta3pFWDtXNqFTW9q9JM9wbijPEmcg4LfQ36Cpyg";
-  const userId = "b25acafe-aadb-4ce1-9a97-40f41e944f3e";
+  const userId = decodedToken.userId;
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);

@@ -15,19 +15,16 @@ import { AuthContext } from "./context/AuthContext";
 import { Navigate } from "react-router-dom";
 import UserProfile from "./pages/UserProfile/UserProfile";
 function App() {
-
   const ProtectedRoute = ({ children }) => {
     const { token } = useContext(AuthContext);
-    
 
     if (!token) {
       return <Navigate to="/" />;
     }
 
     return children;
-
   };
-  
+
   return (
     <div className="overflow-hidden">
       <BrowserRouter>
@@ -37,12 +34,26 @@ function App() {
           <Route path="/blogs" element={<Blog />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/profile" element={<Profile />} />
+          {/* <Route path="/profile" element={<Profile />} /> */}
           <Route path="/blog" element={<UserBlogs />} />
 
-          <Route path="/add-blog" element={<ProtectedRoute><AddBlog /></ProtectedRoute>} />
-          <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
-          <Route path='/user/:id' element={<UserProfile/>}/>
+          <Route
+            path="/add-blog"
+            element={
+              <ProtectedRoute>
+                <AddBlog />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route
+            path="/edit-profile"
+            element={
+              <ProtectedRoute>
+                <EditProfile />
+              </ProtectedRoute>
+            }
+          /> */}
+          <Route path="/user/:id" element={<UserProfile />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/chat" element={<Chat />} />
         </Routes>

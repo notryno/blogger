@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
-
 
 const AddBlog = () => {
   const [content, setContent] = useState("");
@@ -12,11 +12,11 @@ const AddBlog = () => {
   const [summary, setSummary] = useState("");
   const [images, setImages] = useState([]);
   const [tags, setTags] = useState([]);
-  const { user } = useContext(AuthContext);
-  const token = localStorage.getItem("token")
+  const navigate = useNavigate();
+  const { token } = useContext(AuthContext);
+  const StoredTOken = localStorage.getItem("token");
 
-  const decodedToken = jwtDecode(token);
-
+  const decodedToken = jwtDecode(StoredTOken);
 
   const handleEditorChange = (content, editor) => {
     setContent(content);
@@ -62,6 +62,7 @@ const AddBlog = () => {
       setContent("");
       setImages([]);
       setTags("");
+      navigate("/blogs");
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
