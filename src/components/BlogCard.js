@@ -1,7 +1,16 @@
 import React from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { jwtDecode } from "jwt-decode";
+
 
 function BlogCard({ blogs, handleVote }) {
+
+  const token = localStorage.getItem("token")
+
+  const decodedToken = jwtDecode(token);
+
+
+
   function Card({
     imageUrl,
     title,
@@ -16,7 +25,7 @@ function BlogCard({ blogs, handleVote }) {
     id,
   }) {
     const isUserReaction = (reaction) =>
-      reaction?.userId === "b25acafe-aadb-4ce1-9a97-40f41e944f3e";
+      reaction?.userId === decodedToken.userId;
     const userReaction = reactions.find(isUserReaction);
 
     function navigateToBlog(id) {

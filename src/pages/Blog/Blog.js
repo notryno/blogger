@@ -3,17 +3,21 @@ import blogheader from "../../assets/homeimage.jpg";
 import BlogCard from "../../components/BlogCard";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
+import { jwtDecode } from "jwt-decode";
+
 
 const Blog = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [sortingOption, setSortingOption] = useState("");
   const [totalBlogs, setTotalBlogs] = useState(0);
+  const token = localStorage.getItem("token");
+
+  const decodedToken = jwtDecode(token);
+
 
   const [blogs, setBlogs] = useState([]);
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU3VqdSIsImp0aSI6IjExMWQxMWJmLTAzNTctNDU2Mi1iM2YwLTYxMTVhZGYyYjg5NSIsInVzZXJJZCI6ImIyNWFjYWZlLWFhZGItNGNlMS05YTk3LTQwZjQxZTk0NGYzZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MTU2OTQ1NTksImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwNzkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDc5In0.M80Sta3pFWDtXNqFTW9q9JM9wbijPEmcg4LfQ36Cpyg";
 
   const handleVote = async (voteType, blogId) => {
     try {
@@ -26,7 +30,7 @@ const Blog = () => {
 
       // Find the user's existing reaction, if any
       const existingReaction = blog.reactions.find(
-        (reaction) => reaction.userId === "b25acafe-aadb-4ce1-9a97-40f41e944f3e"
+        (reaction) => reaction.userId === decodedToken.userId
       );
 
       // If there is an existing reaction

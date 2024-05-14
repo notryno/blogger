@@ -3,6 +3,8 @@ import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 
 import { AuthContext } from "../../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
+
 
 const AddBlog = () => {
   const [content, setContent] = useState("");
@@ -11,6 +13,10 @@ const AddBlog = () => {
   const [images, setImages] = useState([]);
   const [tags, setTags] = useState([]);
   const { user } = useContext(AuthContext);
+  const token = localStorage.getItem("token")
+
+  const decodedToken = jwtDecode(token);
+
 
   const handleEditorChange = (content, editor) => {
     setContent(content);
@@ -23,8 +29,6 @@ const AddBlog = () => {
     console.log("Summary:", summary);
     console.log("Content:", content);
     console.log("Images:", images);
-    var token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU3VqdSIsImp0aSI6IjExMWQxMWJmLTAzNTctNDU2Mi1iM2YwLTYxMTVhZGYyYjg5NSIsInVzZXJJZCI6ImIyNWFjYWZlLWFhZGItNGNlMS05YTk3LTQwZjQxZTk0NGYzZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MTU2OTQ1NTksImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwNzkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDc5In0.M80Sta3pFWDtXNqFTW9q9JM9wbijPEmcg4LfQ36Cpyg";
 
     const tagsArray = tags.split(",").map((tag) => tag.trim());
 
@@ -41,7 +45,7 @@ const AddBlog = () => {
           content: content,
           image: images ? images[0] || "" : "",
           tags: tagsArray,
-          author: "b25acafe-aadb-4ce1-9a97-40f41e944f3e",
+          author: decodedToken.userId,
         },
         {
           headers: {

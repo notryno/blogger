@@ -8,24 +8,24 @@ import {
   AiOutlineBell,
 } from "react-icons/ai";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { token, dispatch } = useContext(AuthContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT" });
+    navigate("/");
   };
 
   return (
-    <nav
-      className="flex justify-between items-center py-4 px-6 bg-gray-900  top-0 w-full z-50"
-      style={{}}
-    >
+    <nav className="flex justify-between items-center py-4 px-6 bg-gray-900 top-0 w-full z-50">
       <div className="flex items-center text-3xl py-2">
         <Link to="/">
           <h1 className="text-white text-3xl font-semibold mr-4 uppercase">
@@ -78,7 +78,7 @@ const Navbar = () => {
             </div>
           )}
         </div>
-        {user ? (
+        {token ? (
           <div className="relative">
             <div
               className="flex items-center text-gray-300 cursor-pointer px-2"
@@ -101,7 +101,50 @@ const Navbar = () => {
                   </li>
                   <li>
                     <Link
-                      to="/profileblogs"
+                      to="/add-blog"
+                      className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Add Blog
+                    </Link>
+                  </li>
+                  <li
+                    className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                    onClick={() => {
+                      handleLogout();
+                      setDropdownOpen(false);
+                    }}
+                  >
+                    Logout
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            <Link to="/login">
+              <div className="text-xl text-white p-">
+                <button className="bg-blue-700 rounded p-2 hover:bg-blue-600">
+                  Login
+                </button>
+              </div>
+            </Link>
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-gray-100 rounded-lg shadow-lg z-50">
+                <ul className="py-1">
+                  <li>
+                    <Link
+                      to="/profile"
+                      className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/blogs"
                       className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
                       onClick={() => setDropdownOpen(false)}
                     >
@@ -120,51 +163,6 @@ const Navbar = () => {
                 </ul>
               </div>
             )}
-          </div>
-        ) : (
-          <>
-            <div className="relative">
-              <div
-                className="flex items-center text-gray-300 cursor-pointer"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <span className="mr-2">hello</span>
-                <AiOutlineUser className="h-6 w-6" />
-              </div>
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-gray-100 rounded-lg shadow-lg z-50">
-                  <ul className="py-1">
-                    <li>
-                      <Link
-                        to="/profile"
-                        className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
-                        onClick={() => setDropdownOpen(false)}
-                      >
-                        Profile
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/blogs"
-                        className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
-                        onClick={() => setDropdownOpen(false)}
-                      >
-                        Profile Blogs
-                      </Link>
-                    </li>
-                    <li
-                      className="text-gray-800 hover:bg-gray-200 px-4 py-2 cursor-pointer block"
-                      onClick={() => {
-                        handleLogout();
-                        setDropdownOpen(false);
-                      }}
-                    >
-                      Logout
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
           </>
         )}
       </div>
@@ -202,7 +200,7 @@ const Navbar = () => {
           >
             Blog
           </Link>
-          {user && (
+          {token && (
             <>
               <Link
                 to="/profile"
@@ -227,7 +225,7 @@ const Navbar = () => {
               </button>
             </>
           )}
-          {!user && (
+          {!token && (
             <Link
               to="/login"
               className="block  py-4 border-b border-gray-700 hover:text-gray-300"
