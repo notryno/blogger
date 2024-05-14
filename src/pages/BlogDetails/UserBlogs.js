@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import homeimageprofile from "../../assets/homeimage2.jpg";
 import {
   FaArrowUp,
@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 
 
@@ -41,13 +42,14 @@ const UserBlogs = () => {
   const [editMode, setEditMode] = useState(false);
   const [editedComment, setEditedComment] = useState("");
 
+  const { token } = useContext(AuthContext);
+
+  const storedToken = localStorage.getItem("token");
+
+  const decodedToken = jwtDecode(storedToken);
+
   const [id, setId] = useState(null);
   const [blogId, setBlogId] = useState(null);
-
-  const token = localStorage.getItem("token")
-  const decodedToken = jwtDecode(token);
-
-
   const userId = decodedToken.userId;
 
   useEffect(() => {

@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import blogheader from "../../assets/homeimage.jpg";
 import BlogCard from "../../components/BlogCard";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { jwtDecode } from "jwt-decode";
-
+import { AuthContext } from "../../context/AuthContext";
 
 const Blog = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [sortingOption, setSortingOption] = useState("");
   const [totalBlogs, setTotalBlogs] = useState(0);
-  const token = localStorage.getItem("token");
+  const { token } = useContext(AuthContext);
 
-  const decodedToken = jwtDecode(token);
+  const storedToken = localStorage.getItem("token");
 
+  const decodedToken = jwtDecode(storedToken);
 
   const [blogs, setBlogs] = useState([]);
-
 
   const handleVote = async (voteType, blogId) => {
     try {
